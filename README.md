@@ -150,7 +150,7 @@ npm start
 
 ## 版本管理与上线
 
-- 项目根目录已初始化 **Git**（`main` 分支）；日常用 `git add` / `git commit`，并推送到 **GitHub / Gitee** 等远程仓库备份。
+- 项目根目录已初始化 **Git**（`main` 分支）；日常用 `git add` / `git commit`，并推送到 **GitHub / Gitee** 等远程仓库备份。**操作步骤见 `docs/git_guide.md`。**
 - **正式上线前**请阅读 **`docs/DEPLOY_CHECKLIST.md`**（域名、HTTPS、`apiBase`、密钥等须自行在微信公众平台与服务器上配置）。
 
 ## 许可证
