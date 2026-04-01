@@ -1,0 +1,53 @@
+.page {
+  padding: 32rpx;
+}
+
+.picker {
+  padding: 20rpx 24rpx;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1rpx solid rgba(0, 212, 170, 0.35);
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  color: #e8f1ff;
+}
+
+.link {
+  display: block;
+  text-align: center;
+  margin-top: 32rpx;
+  color: #5dade2;
+  font-size: 26rpx;
+}
+
+.row-sms {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.input-sms {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.btn-sms {
+  flex-shrink: 0;
+  min-width: 200rpx;
+  font-size: 24rpx;
+  padding: 0 20rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: rgba(0, 212, 170, 0.2);
+  color: #00d4aa;
+  border: 1rpx solid #00d4aa;
+  border-radius: 12rpx;
+}
+
+.hint {
+  display: block;
+  font-size: 22rpx;
+  color: #6b7a99;
+  margin-bottom: 20rpx;
+  line-height: 1.4;
+}

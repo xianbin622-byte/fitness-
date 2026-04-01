@@ -1,0 +1,124 @@
+.page-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.main-scroll {
+  flex: 1;
+  height: 0;
+  padding: 24rpx;
+  padding-bottom: 0;
+  box-sizing: border-box;
+}
+
+.member-top {
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #00d4aa;
+  margin-bottom: 20rpx;
+}
+
+.picker-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22rpx 24rpx;
+  margin-bottom: 16rpx;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1rpx solid rgba(0, 212, 170, 0.35);
+  border-radius: 12rpx;
+}
+
+.pl-label {
+  color: #8fa3c4;
+  font-size: 28rpx;
+}
+
+.pl-val {
+  color: #e8f1ff;
+  font-size: 28rpx;
+}
+
+.age-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 0 8rpx;
+}
+
+.age-num {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #00d4aa;
+}
+
+.hint {
+  display: block;
+  font-size: 22rpx;
+  color: #6b7a99;
+  line-height: 1.5;
+  margin-bottom: 12rpx;
+}
+
+.body-text {
+  display: block;
+  color: #e8f1ff;
+  font-size: 28rpx;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.area {
+  width: 100%;
+  min-height: 200rpx;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1rpx solid rgba(0, 212, 170, 0.35);
+  border-radius: 12rpx;
+  padding: 16rpx;
+  color: #e8f1ff;
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
+}
+
+.scroll-spacer {
+  height: calc(140rpx + env(safe-area-inset-bottom));
+}
+
+.tab-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  padding: 12rpx 16rpx calc(12rpx + env(safe-area-inset-bottom));
+  background: rgba(8, 18, 35, 0.96);
+  border-top: 1rpx solid rgba(0, 212, 170, 0.2);
+  box-shadow: 0 -8rpx 32rpx rgba(0, 0, 0, 0.35);
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 8rpx;
+  border-radius: 12rpx;
+  color: #6b7a99;
+}
+
+.tab-item.active {
+  color: #00d4aa;
+  background: rgba(0, 212, 170, 0.12);
+}
+
+.tab-text {
+  font-size: 26rpx;
+  font-weight: 500;
+}

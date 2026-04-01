@@ -1,0 +1,11 @@
+.page {
+  padding: 24rpx;
+}
+
+.body {
+  display: block;
+  margin-top: 12rpx;
+  color: #cde2ff;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}

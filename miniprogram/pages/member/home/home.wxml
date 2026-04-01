@@ -1,0 +1,52 @@
+<view class="page safe-bottom">
+  <view class="hero">
+    <text class="hello">你好，{{userName}}</text>
+    <text class="coach">当前教练：{{coachName}}</text>
+  </view>
+
+  <view class="card">
+    <view class="card-hd">
+      <text class="card-title">下一节课</text>
+      <navigator class="link" url="/pages/member/coach-detail/coach-detail">去预约</navigator>
+    </view>
+    <view wx:if="{{nextClass}}">
+      <text class="main-value">{{nextClass.appointmentDate}} {{nextClass.startTime}}-{{nextClass.endTime}}</text>
+      <text class="sub">状态：已预约</text>
+    </view>
+    <text wx:else class="sub">暂无预约，建议先选择教练并预约时间。</text>
+    <text class="sub">下节课内容：{{aiTrainingPlan || '生成中...'}}</text>
+    <text class="sub">饮食建议：{{aiDietAdvice || '生成中...'}}</text>
+  </view>
+
+  <view class="card">
+    <text class="card-title">身体数据摘要</text>
+    <view class="metrics">
+      <view class="metric">
+        <text class="metric-label">体重</text>
+        <text class="metric-value">{{bodySummary.weight}}<text class="unit">kg</text></text>
+      </view>
+      <view class="metric">
+        <text class="metric-label">体脂</text>
+        <text class="metric-value">{{bodySummary.bodyFat}}<text class="unit">%</text></text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="card-title">快捷入口</text>
+    <view class="quick">
+      <navigator class="qbtn" url="/pages/member/booking-center/booking-center">预约</navigator>
+      <navigator class="qbtn" url="/pages/member/body-center/body-center">数据</navigator>
+      <navigator class="qbtn" url="/pages/member/training-center/training-center">记录</navigator>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="card-title">最近课程记录</text>
+    <text class="sub" wx:if="{{!recentCourse}}">暂无课程记录</text>
+    <view wx:if="{{recentCourse}}">
+      <text class="sub" wx:if="{{recentCourse.createdAt}}">{{recentCourse.createdAt}}</text>
+      <text class="summary">{{recentCourse.summary || '暂无总结，等待教练课后生成。'}}</text>
+    </view>
+  </view>
+</view>

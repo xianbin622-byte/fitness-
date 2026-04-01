@@ -1,0 +1,8 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">饮食建议</text>
+    <textarea class="area" value="{{dietAdvice}}" bindinput="onD" placeholder="根据会员情况编辑" />
+    <button class="btn-primary" bindtap="onSave" wx:if="{{courseRecordId}}">保存到最近课程记录</button>
+    <text class="sub" wx:else>暂无课程记录，请先完成一节闪记并生成总结。</text>
+  </view>
+</view>

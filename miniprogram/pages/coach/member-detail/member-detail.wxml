@@ -1,0 +1,82 @@
+<view class="page-wrap" wx:if="{{member}}">
+  <scroll-view scroll-y class="main-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="card member-top">
+      <text class="title">{{member.nickname}}</text>
+      <text class="sub">手机 {{member.phone}}</text>
+    </view>
+
+    <block wx:if="{{panel==='body'}}">
+      <view class="card">
+        <text class="section-title">测量信息</text>
+        <picker mode="date" value="{{recordDate}}" bindchange="onRecordDate">
+          <view class="picker-line">
+            <text class="pl-label">记录日期</text>
+            <text class="pl-val">{{recordDate}}</text>
+          </view>
+        </picker>
+        <picker mode="selector" range="{{genders}}" value="{{genderIndex}}" bindchange="onGender">
+          <view class="picker-line">
+            <text class="pl-label">性别</text>
+            <text class="pl-val">{{genderLabel}}</text>
+          </view>
+        </picker>
+        <picker mode="date" value="{{birthDate}}" start="1920-01-01" end="{{recordDate}}" bindchange="onBirthDate">
+          <view class="picker-line">
+            <text class="pl-label">出生日期</text>
+            <text class="pl-val">{{birthDate}}</text>
+          </view>
+        </picker>
+        <view class="age-line" wx:if="{{ageDisplay}}">
+          <text class="pl-label">年龄（自动）</text>
+          <text class="age-num">{{ageDisplay}} 岁</text>
+        </view>
+        <text class="hint" wx:else>请选择出生日期，将按「记录日期」自动计算周岁</text>
+      </view>
+      <view class="card">
+        <text class="section-title">围度与成分</text>
+        <input class="input" type="digit" placeholder="身高 cm" value="{{height}}" bindinput="onH" />
+        <input class="input" type="digit" placeholder="体重 kg" value="{{weight}}" bindinput="onW" />
+        <input class="input" type="digit" placeholder="体脂 %" value="{{bodyFat}}" bindinput="onBf" />
+        <input class="input" type="digit" placeholder="腰围 cm" value="{{waist}}" bindinput="onWa" />
+        <input class="input" type="digit" placeholder="臀围 cm" value="{{hip}}" bindinput="onHi" />
+        <input class="input" type="digit" placeholder="腿围 cm" value="{{thigh}}" bindinput="onTh" />
+        <input class="input" type="digit" placeholder="胸围 cm" value="{{chest}}" bindinput="onCh" />
+        <input class="input" type="digit" placeholder="上臂围 cm" value="{{arm}}" bindinput="onAr" />
+        <input class="input" type="digit" placeholder="骨骼肌量 kg" value="{{skeletalMuscle}}" bindinput="onSk" />
+        <textarea class="area" placeholder="备注" value="{{notes}}" bindinput="onN" />
+        <button class="btn-primary" bindtap="onSaveBody">保存身体数据</button>
+      </view>
+    </block>
+
+    <block wx:if="{{panel==='next'}}">
+      <view class="card">
+        <text class="section-title">下次课程建议</text>
+        <text class="body-text">{{nextText}}</text>
+        <text class="hint">内容来自最近一次课程记录，可在「闪记 → 生成」后更新。</text>
+      </view>
+    </block>
+
+    <block wx:if="{{panel==='diet'}}">
+      <view class="card">
+        <text class="section-title">饮食建议</text>
+        <textarea class="area" value="{{dietAdvice}}" bindinput="onDiet" placeholder="根据会员情况编辑" />
+        <button class="btn-primary" bindtap="onSaveDiet" wx:if="{{courseRecordId}}">保存到最近课程记录</button>
+        <text class="hint" wx:else>暂无课程记录，请先完成一节闪记并生成总结。</text>
+      </view>
+    </block>
+
+    <view class="scroll-spacer"></view>
+  </scroll-view>
+
+  <view class="tab-bar safe-bottom">
+    <view class="tab-item {{panel==='body'?'active':''}}" data-p="body" bindtap="onTab">
+      <text class="tab-text">身体数据</text>
+    </view>
+    <view class="tab-item {{panel==='next'?'active':''}}" data-p="next" bindtap="onTab">
+      <text class="tab-text">下次建议</text>
+    </view>
+    <view class="tab-item {{panel==='diet'?'active':''}}" data-p="diet" bindtap="onTab">
+      <text class="tab-text">饮食建议</text>
+    </view>
+  </view>
+</view>

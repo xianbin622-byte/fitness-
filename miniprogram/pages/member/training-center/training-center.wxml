@@ -1,0 +1,20 @@
+<view class="page safe-bottom">
+  <view class="list">
+    <navigator class="tile" url="/pages/member/course-content/course-content">
+      <text class="tile-title">下节课内容</text>
+      <text class="tile-desc">查看下次课程建议与最近摘要</text>
+    </navigator>
+    <navigator class="tile" url="/pages/member/ai-plan/ai-plan">
+      <text class="tile-title">AI训练计划</text>
+      <text class="tile-desc">一键生成每周训练与饮食建议</text>
+    </navigator>
+    <navigator class="tile" url="/pages/member/diet/diet">
+      <text class="tile-title">饮食建议</text>
+      <text class="tile-desc">课后饮食注意事项</text>
+    </navigator>
+    <navigator class="tile" url="/pages/member/course-history/course-history">
+      <text class="tile-title">上课记录</text>
+      <text class="tile-desc">查看历史课程与动作记录</text>
+    </navigator>
+  </view>
+</view>

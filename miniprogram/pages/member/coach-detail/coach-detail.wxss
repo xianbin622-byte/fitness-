@@ -1,0 +1,108 @@
+.page {
+  padding: 24rpx;
+}
+
+.picker {
+  padding: 18rpx;
+  background: #f8fafc;
+  border-radius: 12rpx;
+  color: #111827;
+  border: 1rpx solid #e5e7eb;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-top: 14rpx;
+}
+
+.lg {
+  font-size: 22rpx;
+  padding: 4rpx 10rpx;
+  border-radius: 999rpx;
+}
+
+.lg-a {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.lg-m {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.lg-f {
+  color: #6b7280;
+  background: #f3f4f6;
+}
+
+.lg-c {
+  color: #9a3412;
+  background: #ffedd5;
+}
+
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.slot {
+  padding: 18rpx 14rpx;
+  background: #ffffff;
+  border-radius: 12rpx;
+  border: 1rpx solid #e5e7eb;
+  min-height: 132rpx;
+  box-sizing: border-box;
+}
+
+.slot.available {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
+.slot.mine {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.slot.full {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+}
+
+.slot.closed {
+  background: #ffedd5;
+  border-color: #fed7aa;
+  opacity: 0.75;
+}
+
+.time {
+  display: block;
+  font-size: 30rpx;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.state {
+  display: block;
+  margin-top: 4rpx;
+  font-size: 22rpx;
+  color: #6b7280;
+}
+
+.book-btn {
+  margin-top: 10rpx;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 10rpx;
+  line-height: 1.9;
+}
+
+.hint-card {
+  margin-top: 0;
+}

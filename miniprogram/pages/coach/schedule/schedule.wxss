@@ -1,0 +1,31 @@
+.page {
+  padding: 24rpx;
+}
+
+.row {
+  display: flex;
+  gap: 12rpx;
+}
+
+.row .input {
+  flex: 1;
+}
+
+.picker {
+  padding: 16rpx;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10rpx;
+  margin-bottom: 16rpx;
+}
+
+.slot {
+  display: flex;
+  justify-content: space-between;
+  padding: 12rpx 0;
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.06);
+}
+
+.del {
+  color: #e74c3c;
+  font-size: 26rpx;
+}

@@ -1,0 +1,17 @@
+{
+  "description": "健身私教会员预约与身体数据管理",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "postcss": true,
+    "minified": true
+  },
+  "compileType": "miniprogram",
+  "miniprogramRoot": "miniprogram/",
+  "appid": "touristappid",
+  "projectname": "fitness-coach",
+  "libVersion": "3.5.5"
+}

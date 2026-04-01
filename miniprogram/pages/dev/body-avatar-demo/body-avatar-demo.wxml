@@ -1,0 +1,16 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <view class="hint">
+      人模接入演示：默认仍为包内 Duck。将导出的人模复制为
+      <text class="mono">miniprogram/assets/models/body.glb</text>
+      后，在
+      <text class="mono">body-avatar-demo.js</text>
+      把 defaultModel 改为
+      <text class="mono">assets/models/body.glb</text>
+      再编译。详见仓库根目录
+      <text class="mono">body-model-workspace/README.md</text>
+      。
+    </view>
+    <body-gltf modelPath="{{modelPath}}" />
+  </view>
+</view>

@@ -1,0 +1,9 @@
+<view class="page safe-bottom">
+  <view class="card" wx:if="{{user}}">
+    <text class="title">账号信息</text>
+    <view class="row"><text class="sub">昵称</text><text>{{user.nickname}}</text></view>
+    <view class="row"><text class="sub">手机</text><text>{{user.phone}}</text></view>
+    <view class="row"><text class="sub">角色</text><text>{{user.role === 'MEMBER' ? '会员' : '教练'}}</text></view>
+  </view>
+  <button class="btn-ghost" bindtap="logout">退出登录</button>
+</view>

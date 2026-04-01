@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "体型组件演示",
+  "usingComponents": {
+    "body-visualizer": "/components/body-visualizer/index"
+  }
+}

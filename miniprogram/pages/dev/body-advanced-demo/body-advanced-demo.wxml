@@ -1,0 +1,50 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <body-advanced
+      height="{{height}}"
+      weight="{{weight}}"
+      bodyFat="{{bodyFat}}"
+      chest="{{chest}}"
+      waist="{{waist}}"
+      hip="{{hip}}"
+      arm="{{arm}}"
+      thigh="{{thigh}}"
+      calf="{{calf}}"
+      gender="{{gender}}"
+      chibi="{{chibi}}"
+    />
+  </view>
+  <view class="card">
+    <view class="row">
+      <text class="lab">性别</text>
+      <view class="seg">
+        <text class="seg-i {{gender==='male'?'on':''}}" data-g="male" bindtap="onGender">男</text>
+        <text class="seg-i {{gender==='female'?'on':''}}" data-g="female" bindtap="onGender">女</text>
+      </view>
+    </view>
+    <view class="row">
+      <text class="lab">Q 版大头</text>
+      <switch checked="{{chibi}}" bindchange="onChibi" color="#2563eb" />
+    </view>
+  </view>
+  <view class="card">
+    <view class="row"><text class="lab">身高</text><text class="val">{{height}}</text></view>
+    <slider value="{{height}}" min="155" max="195" step="1" bindchange="onH" activeColor="#2563eb" />
+    <view class="row"><text class="lab">体重</text><text class="val">{{weight}}</text></view>
+    <slider value="{{weight}}" min="45" max="130" step="1" bindchange="onW" activeColor="#2563eb" />
+    <view class="row"><text class="lab">体脂 %</text><text class="val">{{bodyFat}}</text></view>
+    <slider value="{{bodyFat}}" min="6" max="40" step="1" bindchange="onBf" activeColor="#2563eb" />
+    <view class="row"><text class="lab">胸围</text><text class="val">{{chest}}</text></view>
+    <slider value="{{chest}}" min="75" max="120" step="1" bindchange="onChest" activeColor="#2563eb" />
+    <view class="row"><text class="lab">腰围</text><text class="val">{{waist}}</text></view>
+    <slider value="{{waist}}" min="58" max="120" step="1" bindchange="onWaist" activeColor="#2563eb" />
+    <view class="row"><text class="lab">臀围</text><text class="val">{{hip}}</text></view>
+    <slider value="{{hip}}" min="75" max="130" step="1" bindchange="onHip" activeColor="#2563eb" />
+    <view class="row"><text class="lab">臂围</text><text class="val">{{arm}}</text></view>
+    <slider value="{{arm}}" min="22" max="48" step="1" bindchange="onArm" activeColor="#2563eb" />
+    <view class="row"><text class="lab">大腿围</text><text class="val">{{thigh}}</text></view>
+    <slider value="{{thigh}}" min="42" max="75" step="1" bindchange="onThigh" activeColor="#2563eb" />
+    <view class="row"><text class="lab">小腿围</text><text class="val">{{calf}}</text></view>
+    <slider value="{{calf}}" min="28" max="48" step="1" bindchange="onCalf" activeColor="#2563eb" />
+  </view>
+</view>

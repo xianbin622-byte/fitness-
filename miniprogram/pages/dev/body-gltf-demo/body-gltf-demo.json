@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "GLB 3D 演示",
+  "usingComponents": {
+    "body-gltf": "/components/body-gltf/index"
+  }
+}

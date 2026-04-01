@@ -1,0 +1,16 @@
+<view class="page safe-bottom">
+  <view class="list">
+    <navigator class="tile" url="/pages/member/body-data/body-data">
+      <text class="tile-title">身体数据</text>
+      <text class="tile-desc">查看历史身体指标</text>
+    </navigator>
+    <navigator class="tile" url="/pages/member/body-trend/body-trend">
+      <text class="tile-title">数据趋势图</text>
+      <text class="tile-desc">体重、体脂、腰围变化</text>
+    </navigator>
+    <navigator class="tile" url="/pages/member/body-visual/body-visual">
+      <text class="tile-title">体型展示</text>
+      <text class="tile-desc">围度与体脂轮廓示意</text>
+    </navigator>
+  </view>
+</view>

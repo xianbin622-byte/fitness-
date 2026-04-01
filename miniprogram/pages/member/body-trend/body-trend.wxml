@@ -1,0 +1,46 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title-sm">数据摘要</text>
+    <view class="summary">
+      <view class="item">
+        <text class="label">体重</text>
+        <text class="value">{{summary.weight}}<text class="unit">kg</text></text>
+      </view>
+      <view class="item">
+        <text class="label">体脂</text>
+        <text class="value">{{summary.bodyFat}}<text class="unit">%</text></text>
+      </view>
+    </view>
+  </view>
+  <view class="card">
+    <text class="title-sm">体型</text>
+    <body-3d
+      height="{{height}}"
+      weight="{{weight}}"
+      bodyFat="{{bodyFat}}"
+      waist="{{waist}}"
+      hip="{{hip}}"
+      thigh="{{thigh}}"
+    />
+  </view>
+  <view class="card">
+    <text class="title-sm">趋势图</text>
+  <view class="tabs">
+    <text class="tab {{metric==='weight'?'on':''}}" data-m="weight" bindtap="onMetric">体重</text>
+    <text class="tab {{metric==='bodyFat'?'on':''}}" data-m="bodyFat" bindtap="onMetric">体脂率</text>
+    <text class="tab {{metric==='waist'?'on':''}}" data-m="waist" bindtap="onMetric">腰围</text>
+  </view>
+  <canvas type="2d" id="lineCanvas" class="canvas"></canvas>
+    <text class="hint">折线图根据教练录入数据自动生成</text>
+  </view>
+  <view class="card">
+    <text class="title-sm">历史记录</text>
+    <block wx:for="{{history}}" wx:key="date">
+      <view class="history-row">
+        <text class="sub">{{item.date}}</text>
+        <text class="sub">体重 {{item.weight}}kg · 体脂 {{item.bodyFat}}%</text>
+      </view>
+    </block>
+    <text wx:if="{{!history.length}}" class="sub">暂无历史数据</text>
+  </view>
+</view>

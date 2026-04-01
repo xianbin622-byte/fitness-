@@ -1,0 +1,6 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">饮食注意事项</text>
+    <text class="body">{{text}}</text>
+  </view>
+</view>

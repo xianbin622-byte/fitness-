@@ -1,0 +1,16 @@
+<view class="page safe-bottom">
+  <view class="list">
+    <navigator class="tile" url="/pages/member/coach-list/coach-list">
+      <text class="tile-title">我的教练</text>
+      <text class="tile-desc">选择并绑定教练</text>
+    </navigator>
+    <navigator class="tile" url="/pages/member/coach-detail/coach-detail">
+      <text class="tile-title">教练时间和预约</text>
+      <text class="tile-desc">查看时段并预约课程</text>
+    </navigator>
+    <navigator class="tile" url="/pages/member/my-appointments/my-appointments">
+      <text class="tile-title">我的预约</text>
+      <text class="tile-desc">查看与取消预约记录</text>
+    </navigator>
+  </view>
+</view>

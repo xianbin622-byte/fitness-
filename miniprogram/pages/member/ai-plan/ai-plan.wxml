@@ -1,0 +1,68 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">AI训练计划</text>
+    <text class="sub">基于你最近的身体数据生成（Kimi，可配置；无配置时降级为规则版）。</text>
+  </view>
+
+  <view class="card">
+    <text class="sub">当前数据摘要</text>
+    <view class="metrics">
+      <view class="metric">
+        <text class="label">体重</text>
+        <text class="value">{{weight || '-' }}kg</text>
+      </view>
+      <view class="metric">
+        <text class="label">体脂</text>
+        <text class="value">{{bodyFat || '-' }}%</text>
+      </view>
+      <view class="metric">
+        <text class="label">骨骼肌量</text>
+        <text class="value">{{muscleMass || '-' }}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="sub">目标与经验</text>
+
+    <picker mode="selector" range="{{goalOptions}}" value="{{goalIndex}}" bindchange="onGoal">
+      <view class="picker">目标：{{goalOptions[goalIndex]}}</view>
+    </picker>
+
+    <picker mode="selector" range="{{expOptions}}" value="{{expIndex}}" bindchange="onExp">
+      <view class="picker">经验：{{expOptions[expIndex]}}</view>
+    </picker>
+
+    <button class="btn-primary" bindtap="onGenerate" disabled="{{loading}}">
+      {{loading ? '生成中...' : '生成训练计划'}}
+    </button>
+  </view>
+
+  <block wx:if="{{weeklyPlan && weeklyPlan.length}}">
+    <view class="card">
+      <text class="sub">每周安排</text>
+      <block wx:for="{{weeklyPlan}}" wx:key="day">
+        <view class="day">
+          <text class="day-title">{{item.day}}</text>
+          <block wx:for="{{item.workouts}}" wx:key="action">
+            <text class="wline">
+              {{item.action}}：{{item.sets}}组 × {{item.reps}}次
+            </text>
+          </block>
+          <text class="sub" wx:if="{{item.notes}}">备注：{{item.notes}}</text>
+        </view>
+      </block>
+    </view>
+  </block>
+
+  <view class="card" wx:if="{{tips}}">
+    <text class="sub">训练要点</text>
+    <text class="body-text">{{tips}}</text>
+  </view>
+
+  <view class="card" wx:if="{{diet}}">
+    <text class="sub">饮食建议</text>
+    <text class="body-text">{{diet}}</text>
+  </view>
+</view>
+

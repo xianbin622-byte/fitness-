@@ -1,0 +1,10 @@
+<view class="wrap">
+  <canvas
+    type="webgl"
+    id="bodyAdvancedCanvas"
+    class="cv"
+    bindtouchstart="onTouchStart"
+    bindtouchmove="onTouchMove"
+    bindtouchend="onTouchEnd"
+  />
+</view>

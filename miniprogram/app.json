@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/register/register",
+    "pages/home/home",
+    "pages/profile/profile",
+    "pages/member/home/home",
+    "pages/member/booking-center/booking-center",
+    "pages/member/body-center/body-center",
+    "pages/member/training-center/training-center",
+    "pages/member/ai-plan/ai-plan",
+    "pages/member/coach-list/coach-list",
+    "pages/member/coach-detail/coach-detail",
+    "pages/member/my-appointments/my-appointments",
+    "pages/member/body-data/body-data",
+    "pages/member/body-trend/body-trend",
+    "pages/member/course-content/course-content",
+    "pages/member/diet/diet",
+    "pages/member/course-history/course-history",
+    "pages/member/course-detail/course-detail",
+    "pages/member/body-visual/body-visual",
+    "pages/dev/body-visualizer-demo/body-visualizer-demo",
+    "pages/dev/body-advanced-demo/body-advanced-demo",
+    "pages/dev/body-gltf-demo/body-gltf-demo",
+    "pages/dev/body-avatar-demo/body-avatar-demo",
+    "pages/coach/home/home",
+    "pages/coach/members/members",
+    "pages/coach/member-detail/member-detail",
+    "pages/coach/schedule/schedule",
+    "pages/coach/close-day/close-day",
+    "pages/coach/body-edit/body-edit",
+    "pages/coach/flash/flash",
+    "pages/coach/course-confirm/course-confirm",
+    "pages/coach/next-course/next-course",
+    "pages/coach/diet-edit/diet-edit"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#0a1628",
+    "navigationBarTitleText": "健身私教",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#0a1628",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "networkTimeout": {
+    "request": 30000,
+    "connectSocket": 30000,
+    "uploadFile": 120000,
+    "downloadFile": 60000
+  }
+}

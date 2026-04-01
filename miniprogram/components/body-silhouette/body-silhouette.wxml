@@ -1,0 +1,13 @@
+<view class="wrap">
+  <view class="figure {{gender === '女' ? 'female' : 'male'}}">
+    <view class="head" style="transform: scale({{headScale}})"></view>
+    <view class="torso" style="width: {{torsoW}}rpx; transform: scaleX({{torsoScaleX}}) scaleY({{torsoScaleY}})"></view>
+    <view class="hip" style="width: {{hipW}}rpx; transform: scaleX({{hipScaleX}}) scaleY({{hipScaleY}})"></view>
+    <view class="leg" style="transform: scale({{legScale}})"></view>
+  </view>
+  <view class="legend">
+    <text>胸围影响肩宽视觉：{{chest}}</text>
+    <text>腰围：{{waist}} ｜ 臀围：{{hip}}</text>
+    <text>体脂：{{bodyFat}}%</text>
+  </view>
+</view>

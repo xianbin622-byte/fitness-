@@ -1,0 +1,179 @@
+// 健身私教小程序 - 数据库模型（默认 SQLite，可切换 PostgreSQL，见 README）
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// 用户表：会员与教练共用，role 为 MEMBER | COACH
+model User {
+  id           String   @id @default(uuid())
+  role         String
+  nickname     String
+  phone        String   @unique
+  avatar       String?
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  coachMemberAsCoach   CoachMemberRelation[] @relation("CoachSide")
+  coachMemberAsMember  CoachMemberRelation[] @relation("MemberSide")
+  coachSchedules       CoachSchedule[]
+  coachClosedDays      CoachClosedDay[]
+  appointmentsAsCoach  Appointment[]         @relation("CoachAppointments")
+  appointmentsAsMember Appointment[]         @relation("MemberAppointments")
+  bodyAsMember         BodyMeasurement[]     @relation("MemberBody")
+  bodyEnteredByCoach   BodyMeasurement[]     @relation("CoachBody")
+  courseAsCoach        CourseRecord[]        @relation("CoachCourses")
+  courseAsMember       CourseRecord[]        @relation("MemberCourses")
+
+  @@map("users")
+}
+
+model CoachMemberRelation {
+  id        String   @id @default(uuid())
+  coachId   String   @map("coach_id")
+  memberId  String   @map("member_id")
+  status    String   @default("active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  coach  User @relation("CoachSide", fields: [coachId], references: [id], onDelete: Cascade)
+  member User @relation("MemberSide", fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([coachId, memberId])
+  @@map("coach_member_relations")
+}
+
+model CoachClosedDay {
+  id        String   @id @default(uuid())
+  coachId   String   @map("coach_id")
+  date      DateTime
+  createdAt DateTime @default(now()) @map("created_at")
+
+  coach User @relation(fields: [coachId], references: [id], onDelete: Cascade)
+
+  @@unique([coachId, date])
+  @@map("coach_closed_days")
+}
+
+model CoachSchedule {
+  id          String   @id @default(uuid())
+  coachId     String   @map("coach_id")
+  date        DateTime
+  startTime   String   @map("start_time")
+  endTime     String   @map("end_time")
+  isAvailable Boolean  @default(true) @map("is_available")
+  isClosed    Boolean  @default(false) @map("is_closed")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  coach        User          @relation(fields: [coachId], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+
+  @@index([coachId, date])
+  @@map("coach_schedules")
+}
+
+/// status: BOOKED | CANCELLED | COMPLETED
+model Appointment {
+  id              String   @id @default(uuid())
+  coachId         String   @map("coach_id")
+  memberId        String   @map("member_id")
+  scheduleId      String   @unique @map("schedule_id")
+  appointmentDate DateTime @map("appointment_date")
+  startTime       String   @map("start_time")
+  endTime         String   @map("end_time")
+  status          String   @default("BOOKED")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  coach        User          @relation("CoachAppointments", fields: [coachId], references: [id], onDelete: Cascade)
+  member       User          @relation("MemberAppointments", fields: [memberId], references: [id], onDelete: Cascade)
+  schedule     CoachSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  courseRecord CourseRecord?
+
+  @@index([memberId, appointmentDate])
+  @@index([coachId, appointmentDate])
+  @@map("appointments")
+}
+
+model BodyMeasurement {
+  id             String   @id @default(uuid())
+  memberId       String   @map("member_id")
+  coachId        String   @map("coach_id")
+  gender         String?
+  age            Int?
+  height         Float?
+  weight         Float?
+  bodyFat        Float?   @map("body_fat")
+  waist          Float?
+  hip            Float?
+  thigh          Float?
+  chest          Float?
+  arm            Float?
+  skeletalMuscle Float?   @map("skeletal_muscle")
+  recordDate     DateTime @map("record_date")
+  notes          String?
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  member User @relation("MemberBody", fields: [memberId], references: [id], onDelete: Cascade)
+  coach  User @relation("CoachBody", fields: [coachId], references: [id], onDelete: Cascade)
+
+  @@index([memberId, recordDate])
+  @@map("body_measurements")
+}
+
+model CourseRecord {
+  id             String   @id @default(uuid())
+  appointmentId  String?  @unique @map("appointment_id")
+  coachId        String   @map("coach_id")
+  memberId       String   @map("member_id")
+  summary        String?
+  nextCoursePlan String?  @map("next_course_plan")
+  dietAdvice     String?  @map("diet_advice")
+  issues         String?
+  voiceNoteUrl   String?  @map("voice_note_url")
+  coachNotes     String?  @map("coach_notes")
+  flashDraftJson String?  @map("flash_draft_json")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  coach         User           @relation("CoachCourses", fields: [coachId], references: [id], onDelete: Cascade)
+  member        User           @relation("MemberCourses", fields: [memberId], references: [id], onDelete: Cascade)
+  appointment   Appointment?   @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  exerciseItems ExerciseItem[]
+
+  @@index([memberId, createdAt])
+  @@map("course_records")
+}
+
+model ExerciseItem {
+  id             String   @id @default(uuid())
+  courseRecordId String   @map("course_record_id")
+  actionName     String   @map("action_name")
+  weight         Float?
+  reps           Int?
+  sets           Int?
+  notes          String?
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  courseRecord CourseRecord @relation(fields: [courseRecordId], references: [id], onDelete: Cascade)
+
+  @@index([courseRecordId])
+  @@map("exercise_items")
+}
+
+model UploadFile {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  path      String
+  mimeType  String?  @map("mime_type")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("upload_files")
+}

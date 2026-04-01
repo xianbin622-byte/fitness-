@@ -1,0 +1,51 @@
+.page {
+  padding: 40rpx 32rpx;
+}
+
+.hero {
+  margin-bottom: 40rpx;
+}
+
+.hero-title {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #e8f1ff;
+}
+
+.hero-sub {
+  display: block;
+  margin-top: 12rpx;
+  color: #8fa3c4;
+  font-size: 26rpx;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.tile {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1rpx solid rgba(0, 212, 170, 0.3);
+  border-radius: 16rpx;
+  padding: 32rpx;
+}
+
+.tile.ghost {
+  border-color: rgba(93, 173, 226, 0.35);
+}
+
+.tile-t {
+  display: block;
+  font-size: 32rpx;
+  color: #00d4aa;
+  font-weight: 600;
+}
+
+.tile-d {
+  display: block;
+  margin-top: 8rpx;
+  color: #8fa3c4;
+  font-size: 24rpx;
+}

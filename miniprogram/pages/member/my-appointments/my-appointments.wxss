@@ -1,0 +1,53 @@
+.page {
+  padding: 24rpx;
+}
+
+.ap-card {
+  margin-bottom: 16rpx;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.d {
+  font-size: 30rpx;
+  color: #111827;
+  font-weight: 600;
+  max-width: 70%;
+}
+
+.status {
+  font-size: 22rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 999rpx;
+}
+
+.is-booked {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.is-done {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.is-cancel {
+  color: #6b7280;
+  background: #f3f4f6;
+}
+
+.btn-cancel {
+  margin-top: 16rpx;
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 10rpx;
+}
+
+.btn-cancel.disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+}

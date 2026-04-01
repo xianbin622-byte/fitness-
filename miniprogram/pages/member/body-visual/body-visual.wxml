@@ -1,0 +1,26 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">体型轮廓（示意）</text>
+    <text class="sub">根据最近一条身体数据中的围度、体脂与骨骼肌估算，仅作趋势参考，非医疗测量。女性胸围按固定比例参与轮廓；男性使用录入胸围。</text>
+  </view>
+  <view class="card pad-v" wx:if="{{loaded}}">
+    <body-silhouette
+      gender="{{gender}}"
+      waist="{{waist}}"
+      hip="{{hip}}"
+      chest="{{chest}}"
+      bodyFat="{{bodyFat}}"
+      fatLevel="{{fatLevel}}"
+      muscleLevel="{{muscleLevel}}"
+    />
+  </view>
+  <view class="card" wx:if="{{loaded}}">
+    <text class="row-t">数据来源（最近一条）</text>
+    <view class="row"><text class="lab">性别</text><text class="val">{{gender}}</text></view>
+    <view class="row"><text class="lab">体脂 %</text><text class="val">{{bodyFat}}</text></view>
+    <view class="row" wx:if="{{gender==='男'}}"><text class="lab">胸围</text><text class="val">已用于轮廓</text></view>
+    <view class="row" wx:if="{{gender==='女'}}"><text class="lab">胸围</text><text class="val muted">示意固定比例</text></view>
+    <view class="row"><text class="lab">腰围</text><text class="val">{{waist}}</text></view>
+    <view class="row"><text class="lab">臀围</text><text class="val">{{hip}}</text></view>
+  </view>
+</view>

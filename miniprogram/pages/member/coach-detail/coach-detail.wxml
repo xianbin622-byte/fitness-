@@ -1,0 +1,38 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">选择日期</text>
+    <picker mode="date" value="{{date}}" bindchange="onDate">
+      <view class="picker">{{date}}</view>
+    </picker>
+    <text class="sub" wx:if="{{dayClosed}}">该日教练已关闭全天预约</text>
+    <view class="legend">
+      <text class="lg lg-a">可预约 {{summary.available}}</text>
+      <text class="lg lg-m">我已约 {{summary.mine}}</text>
+      <text class="lg lg-f">已满 {{summary.full}}</text>
+      <text class="lg lg-c">已关闭 {{summary.closed}}</text>
+    </view>
+  </view>
+  <view class="slot-grid">
+    <block wx:for="{{slots}}" wx:key="id">
+      <view class="slot {{item.status}}">
+        <text class="time">{{item.startTime}}</text>
+        <text class="state">
+          {{item.status === 'available' ? '可预约' : item.status === 'mine' ? '我已预约' : item.status === 'full' ? '已满' : '已关闭'}}
+        </text>
+        <button
+          size="mini"
+          class="book-btn"
+          data-id="{{item.id}}"
+          bindtap="onBook"
+          wx:if="{{item.status === 'available'}}"
+        >预约</button>
+      </view>
+    </block>
+  </view>
+  <view wx:if="{{!slots.length}}" class="card">
+    <text class="sub">当日暂无可展示时段</text>
+  </view>
+  <view class="card hint-card">
+    <text class="sub">提示：已满/已关闭时段不可预约；“我已预约”表示当前会员已占用该时段。</text>
+  </view>
+</view>

@@ -1,0 +1,14 @@
+node_modules/
+miniprogram/node_modules/
+miniprogram/miniprogram_npm/
+server/node_modules/
+server/dist/
+server/.env
+server/uploads/
+server/dev.db
+server/dev.db-journal
+server/*.log
+.DS_Store
+*.log
+.env
+.env.local

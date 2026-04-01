@@ -1,0 +1,54 @@
+/* UI Design System: Light / Productized */
+page {
+  background: #f5f7fb;
+  color: #111827;
+  font-size: 28rpx;
+  min-height: 100vh;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 24rpx rgba(15, 23, 42, 0.06);
+}
+
+.title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 14rpx;
+}
+
+.sub {
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 14rpx;
+}
+
+.btn-ghost {
+  background: #eef2ff;
+  color: #2563eb;
+  border: 1rpx solid #dbe4ff;
+  border-radius: 14rpx;
+}
+
+.input {
+  background: #f8fafc;
+  border: 1rpx solid #e5e7eb;
+  border-radius: 14rpx;
+  padding: 20rpx 24rpx;
+  color: #111827;
+  margin-bottom: 16rpx;
+}
+
+.safe-bottom {
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+}

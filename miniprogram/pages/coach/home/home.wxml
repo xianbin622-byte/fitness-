@@ -1,0 +1,47 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title-sm">今日课程统计</text>
+    <view class="stats">
+      <view class="stat">
+        <text class="stat-label">总课程</text>
+        <text class="stat-value">{{stats.total}}</text>
+      </view>
+      <view class="stat">
+        <text class="stat-label">待上课</text>
+        <text class="stat-value">{{stats.booked}}</text>
+      </view>
+      <view class="stat">
+        <text class="stat-label">已完成</text>
+        <text class="stat-value">{{stats.completed}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="row-hd">
+      <text class="title-sm">今日预约</text>
+      <text class="sub">点击可进入闪记</text>
+    </view>
+    <block wx:for="{{appts}}" wx:key="id">
+      <view class="appt-card" data-aid="{{item.id}}" data-mid="{{item.member.id}}" bindtap="goFlash">
+        <view>
+          <text class="appt-time">{{item.startTime}}-{{item.endTime}}</text>
+          <text class="sub">会员 {{item.member.nickname}}</text>
+        </view>
+        <text class="appt-status {{item.status === 'BOOKED' ? 'is-booked' : item.status === 'COMPLETED' ? 'is-done' : 'is-cancel'}}">
+          {{item.status === 'BOOKED' ? '待上课' : item.status === 'COMPLETED' ? '已完成' : '已取消'}}
+        </text>
+      </view>
+    </block>
+    <text wx:if="{{!appts.length}}" class="sub">暂无预约</text>
+  </view>
+
+  <view class="card">
+    <text class="title-sm">快捷入口</text>
+    <view class="quick">
+      <navigator class="qbtn primary" url="/pages/coach/schedule/schedule">时间表</navigator>
+      <navigator class="qbtn" url="/pages/coach/members/members">会员</navigator>
+      <navigator class="qbtn" url="/pages/coach/flash/flash">闪记</navigator>
+    </view>
+  </view>
+</view>

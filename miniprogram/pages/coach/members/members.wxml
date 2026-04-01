@@ -1,0 +1,8 @@
+<view class="page safe-bottom">
+  <block wx:for="{{list}}" wx:key="id">
+    <navigator class="card" url="/pages/coach/member-detail/member-detail?id={{item.id}}">
+      <text class="title">{{item.nickname}}</text>
+      <text class="sub">手机 {{item.phone}}</text>
+    </navigator>
+  </block>
+</view>

@@ -1,0 +1,5 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="sub">正在打开会员详情…</text>
+  </view>
+</view>

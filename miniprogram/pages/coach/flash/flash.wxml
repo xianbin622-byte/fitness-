@@ -1,0 +1,45 @@
+<view class="page safe-bottom">
+  <view class="card" id="issuesCard">
+    <text class="title">问题点</text>
+    <textarea class="area" value="{{issues}}" bindinput="onIssues" placeholder="记录会员问题点、动作问题等" />
+  </view>
+  <view class="card">
+    <text class="title">动作记录</text>
+    <block wx:for="{{exercises}}" wx:key="index">
+      <view class="ex">
+        <input class="input" placeholder="动作名" value="{{item.actionName}}" data-i="{{index}}" bindinput="onExName" />
+        <view class="row3">
+          <input class="input sm" placeholder="kg" type="digit" value="{{item.weight}}" data-i="{{index}}" data-f="weight" bindinput="onExField" />
+          <input class="input sm" placeholder="次" type="number" value="{{item.reps}}" data-i="{{index}}" data-f="reps" bindinput="onExField" />
+          <input class="input sm" placeholder="组" type="number" value="{{item.sets}}" data-i="{{index}}" data-f="sets" bindinput="onExField" />
+        </view>
+      </view>
+    </block>
+    <button class="btn-ghost" bindtap="addEx">添加动作</button>
+  </view>
+  <view class="card">
+    <text class="title">语音闪记（录音 + 上传 + 转文字）</text>
+    <view class="rec-hd">
+      <text class="sub" wx:if="{{durationMs>0}}">时长：{{formatDuration}}</text>
+      <text class="sub" wx:if="{{durationMs===0}}">点击开始录音</text>
+    </view>
+    <text class="sub" wx:if="{{recordStatusText}}">{{recordStatusText}}</text>
+
+    <view class="rec-actions">
+      <button class="btn-ghost btn-sm" wx:if="{{!recording}}" bindtap="startRecord">开始录音</button>
+      <button class="btn-primary btn-sm" wx:if="{{recording}}" bindtap="stopAndUpload">停止录音并上传</button>
+      <button class="btn-ghost btn-sm" wx:if="{{voiceUrl && !playing}}" bindtap="playVoice">播放录音</button>
+      <button class="btn-ghost btn-sm" wx:if="{{playing}}" bindtap="stopVoice">停止播放</button>
+    </view>
+
+    <text class="sub" wx:if="{{uploading}}">上传中...</text>
+    <text class="sub" wx:if="{{voiceUrl}}">已上传：{{voiceUrl}}</text>
+    <text class="sub">录音上传后会自动转文字并回填到上方“问题点”。</text>
+  </view>
+  <view class="card">
+    <text class="title">教练备注</text>
+    <textarea class="area" value="{{coachNotes}}" bindinput="onNotes" />
+  </view>
+  <button class="btn-primary" bindtap="onSave">保存闪记</button>
+  <button class="btn-primary" bindtap="onGen">生成总结与建议</button>
+</view>

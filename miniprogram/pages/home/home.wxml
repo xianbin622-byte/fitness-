@@ -1,0 +1,25 @@
+<view class="page safe-bottom">
+  <view class="hero">
+    <text class="hero-title">你好，{{user.nickname || '用户'}}</text>
+    <text class="hero-sub">角色：{{roleText}}</text>
+  </view>
+  <view class="grid">
+    <block wx:if="{{isMember}}">
+      <navigator class="tile" url="/pages/member/home/home">
+        <text class="tile-t">会员工作台</text>
+        <text class="tile-d">预约、数据、课程</text>
+      </navigator>
+    </block>
+    <block wx:if="{{isCoach}}">
+      <navigator class="tile" url="/pages/coach/home/home">
+        <text class="tile-t">教练工作台</text>
+        <text class="tile-d">会员、时间表、闪记</text>
+      </navigator>
+    </block>
+    <navigator class="tile ghost" url="/pages/profile/profile">
+      <text class="tile-t">个人中心</text>
+      <text class="tile-d">账号与安全</text>
+    </navigator>
+  </view>
+  <button wx:if="{{!user}}" class="btn-primary" bindtap="goLogin">去登录</button>
+</view>

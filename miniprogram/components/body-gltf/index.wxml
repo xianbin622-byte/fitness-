@@ -1,0 +1,11 @@
+<view class="wrap">
+  <canvas
+    type="webgl"
+    id="bodyGltfCanvas"
+    class="cv"
+    bindtouchstart="onTouchStart"
+    bindtouchmove="onTouchMove"
+    bindtouchend="onTouchEnd"
+  />
+  <view wx:if="{{errorMsg}}" class="err">{{errorMsg}}</view>
+</view>

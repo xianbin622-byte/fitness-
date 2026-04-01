@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "数据趋势",
+  "usingComponents": {
+    "body-3d": "/components/body-3d/index"
+  }
+}

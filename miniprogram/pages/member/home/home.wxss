@@ -1,0 +1,105 @@
+.page {
+  padding: 24rpx;
+}
+
+.hero {
+  padding: 8rpx 4rpx 18rpx;
+}
+
+.hello {
+  display: block;
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #111827;
+}
+
+.coach {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.card-hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.card-title {
+  color: #111827;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.link {
+  color: #2563eb;
+  font-size: 24rpx;
+}
+
+.main-value {
+  display: block;
+  color: #0f172a;
+  font-size: 34rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.metrics {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 14rpx;
+}
+
+.metric {
+  flex: 1;
+  background: #f8fafc;
+  border-radius: 14rpx;
+  padding: 20rpx;
+}
+
+.metric-label {
+  display: block;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.metric-value {
+  display: block;
+  margin-top: 8rpx;
+  color: #111827;
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.unit {
+  font-size: 22rpx;
+  margin-left: 4rpx;
+  color: #6b7280;
+}
+
+.quick {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+
+.qbtn {
+  text-align: center;
+  padding: 16rpx 0;
+  border-radius: 12rpx;
+  background: #eef2ff;
+  color: #1d4ed8;
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.summary {
+  display: block;
+  margin-top: 8rpx;
+  color: #374151;
+  line-height: 1.6;
+  font-size: 26rpx;
+}

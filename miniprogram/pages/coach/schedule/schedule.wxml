@@ -1,0 +1,24 @@
+<view class="page safe-bottom">
+  <view class="card">
+    <text class="title">日期</text>
+    <picker mode="date" value="{{date}}" bindchange="onDate">
+      <view class="picker">{{date}}</view>
+    </picker>
+    <text class="sub" wx:if="{{dayClosed}}">该日已设为全天关闭（会员端不可约）</text>
+    <button class="btn-primary" bindtap="addTemplate">添加固定模板（07:30-10:30 三节）</button>
+    <view class="row">
+      <input class="input" placeholder="开始 HH:mm" value="{{st}}" bindinput="onSt" />
+      <input class="input" placeholder="结束 HH:mm" value="{{et}}" bindinput="onEt" />
+    </view>
+    <button class="btn-ghost" bindtap="addCustom">添加自定义时段</button>
+  </view>
+  <view class="card">
+    <text class="title">当日时段</text>
+    <block wx:for="{{slots}}" wx:key="id">
+      <view class="slot">
+        <text>{{item.startTime}} - {{item.endTime}}</text>
+        <text class="del" data-id="{{item.id}}" bindtap="onDel">删除</text>
+      </view>
+    </block>
+  </view>
+</view>

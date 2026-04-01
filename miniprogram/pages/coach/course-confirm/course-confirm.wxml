@@ -1,0 +1,15 @@
+<view class="page safe-bottom" wx:if="{{rec}}">
+  <view class="card">
+    <text class="title">课程总结（可编辑）</text>
+    <textarea class="area" value="{{rec.summary}}" bindinput="onSum" />
+  </view>
+  <view class="card">
+    <text class="title">下次课程建议</text>
+    <textarea class="area" value="{{rec.nextCoursePlan}}" bindinput="onNext" />
+  </view>
+  <view class="card">
+    <text class="title">饮食建议</text>
+    <textarea class="area" value="{{rec.dietAdvice}}" bindinput="onDiet" />
+  </view>
+  <button class="btn-primary" bindtap="onConfirm">确认并结束课程</button>
+</view>
