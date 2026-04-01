@@ -151,7 +151,8 @@ npm start
 ## 版本管理与上线
 
 - 项目根目录已初始化 **Git**（`main` 分支）；日常用 `git add` / `git commit`，并推送到 **GitHub / Gitee** 等远程仓库备份。**操作步骤见 `docs/git_guide.md`。**
-- **正式上线前**请阅读 **`docs/DEPLOY_CHECKLIST.md`**；**小程序上传、审核、发布** 逐步说明见 **`docs/wechat_publish_steps.md`**。
+- **正式上线前**请阅读 **`docs/DEPLOY_CHECKLIST.md`**；**小程序上传、审核、发布** 见 **`docs/wechat_publish_steps.md`**。
+- **「只能本人操作」的分步清单**（GitHub、服务器、微信后台、上传）：**`docs/OWNER_ONLY_STEPS.md`**。
 
 ## 许可证
 
