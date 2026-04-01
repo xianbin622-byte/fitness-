@@ -46,6 +46,13 @@
 
 ---
 
+## Git（保存代码版本）
+
+日常只需三条命令：`git status` → `git add -A` → `git commit -m "说明"`。  
+**详细步骤、如何推到 GitHub/Gitee** 见 **`docs/git_guide.md`**（建议通读一遍）。
+
+---
+
 ## 可选：打开 GLB 三维演示页（Three.js + 小黄鸭模型）
 
 ### 第 0 步：在终端生成 `miniprogram_npm`（必做一次）
