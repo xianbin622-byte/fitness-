@@ -44,6 +44,8 @@ git config user.name "你的名字"
 git config user.email "你的邮箱@example.com"
 ```
 
+若 **GitHub 用的是谷歌邮箱（Gmail）注册**，`user.email` 一般填 **同一个谷歌邮箱**，这样网页上的提交记录和本机一致。也可用 GitHub 提供的隐私邮箱：`数字+用户名@users.noreply.github.com`（在 GitHub → Settings → Emails 查看）。
+
 说明：上面是 **只在这个项目里生效**。若你想所有项目统一，把 `git config` 改成 `git config --global`。
 
 **本仓库已在本地执行**：`user.name=黄贤斌`、`user.email=huangxianbin@example.com`（示例邮箱）。请你改成真实邮箱：
