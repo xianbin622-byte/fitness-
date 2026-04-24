@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 import { prisma } from "../lib/prisma";
 import type { AuthedRequest } from "../middleware/auth";
 import { authMiddleware, requireRole } from "../middleware/auth";
-import { speechToTextFromUrl } from "../services/speechToText.stub";
+import { speechToTextFromLocalPath } from "../services/speechToText.stub";
 
 const r = Router();
 
@@ -45,15 +45,15 @@ r.post("/voice", authMiddleware, requireRole("COACH"), upload.single("file"), as
     },
   });
 
-  // 自动转写：当前先走 stub；若为空则返回 null（前端不再用固定文案覆盖问题点）
-  const asrText = await speechToTextFromUrl(voiceUrl);
+  // 自动转写：直接读本机刚保存的文件，避免 PUBLIC_BASE_URL 与监听端口不一致时 fetch 失败
+  const asrText = await speechToTextFromLocalPath(file.path, file.originalname);
   const transcript = (asrText || "").trim() || null;
 
   return res.json({
     ok: true,
     data: {
       voiceUrl,
-      /** 当前为自动转写占位；后续可替换为真实 ASR 结果 */
+      /** OpenAI 兼容 ASR（Moonshot 等）；未配 key 或失败则为 null */
       transcript,
     },
     message: transcript ? "上传成功，已完成转文字" : "上传成功，自动转写暂不可用",
