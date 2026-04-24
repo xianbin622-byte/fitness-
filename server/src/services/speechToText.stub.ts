@@ -1,5 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
+import { transcribeBufferWithTencent, transcribeLocalFileWithTencent } from "./tencentSentenceAsr";
 
 function norm(v: unknown): string {
   return String(v || "").trim().replace(/^["']|["']$/g, "");
@@ -10,8 +11,8 @@ function isMoonshotHost(url: string): boolean {
 }
 
 /**
- * 选择用于 Whisper 类「POST /v1/audio/transcriptions」的密钥与 baseUrl。
- * Moonshot/Kimi 开放平台不提供该接口，仅用 KIMI_API_KEY 无法完成真实语音转文字。
+ * OpenAI 兼容的 POST /v1/audio/transcriptions（如 OpenAI 官方或代理）。
+ * Moonshot/Kimi 不提供该接口。
  */
 function resolveOpenAiCompatibleAsr(): { baseUrl: string; apiKey: string } | null {
   const asrKey = norm(process.env.ASR_API_KEY);
@@ -23,7 +24,7 @@ function resolveOpenAiCompatibleAsr(): { baseUrl: string; apiKey: string } | nul
     const base = (asrBase || "https://api.openai.com/v1").replace(/\/$/, "");
     if (isMoonshotHost(base)) {
       console.warn(
-        "[ASR] ASR_BASE_URL 指向 Moonshot/Kimi，该平台不提供 /v1/audio/transcriptions。请改用 OPENAI_API_KEY，或将 ASR_BASE_URL 设为支持该接口的服务（如 https://api.openai.com/v1）。",
+        "[ASR] ASR_BASE_URL 指向 Moonshot/Kimi，该平台不提供 /v1/audio/transcriptions。请改用 OPENAI_API_KEY，或将 ASR_BASE_URL 设为支持该接口的服务。",
       );
       return null;
     }
@@ -33,18 +34,10 @@ function resolveOpenAiCompatibleAsr(): { baseUrl: string; apiKey: string } | nul
     const base = (openaiBase || "https://api.openai.com/v1").replace(/\/$/, "");
     return { baseUrl: base, apiKey: openaiKey };
   }
-  const kimiOnly = norm(process.env.KIMI_API_KEY) || norm(process.env.MOONSHOT_API_KEY);
-  if (kimiOnly) {
-    console.warn(
-      "[ASR] 已配置 KIMI/MOONSHOT 密钥，但该平台不提供语音转文字 HTTP 接口。请在 server/.env 增加 OPENAI_API_KEY（推荐），或配置 ASR_API_KEY + ASR_BASE_URL（须支持 POST /v1/audio/transcriptions）。开发演示可设 MOCK_ASR_TEXT。",
-    );
-  }
   return null;
 }
 
-async function transcribeBlob(blob: Blob, filename: string): Promise<string | null> {
-  if (process.env.MOCK_ASR_TEXT) return process.env.MOCK_ASR_TEXT.trim();
-
+async function transcribeOpenAiCompatibleBlob(blob: Blob, filename: string): Promise<string | null> {
   const cfg = resolveOpenAiCompatibleAsr();
   if (!cfg) return null;
 
@@ -65,7 +58,7 @@ async function transcribeBlob(blob: Blob, filename: string): Promise<string | nu
     });
     if (!resp.ok) {
       const detail = await resp.text().catch(() => "");
-      console.warn("[ASR] transcription failed:", resp.status, detail.slice(0, 500));
+      console.warn("[ASR][OpenAI兼容] transcription failed:", resp.status, detail.slice(0, 500));
       return null;
     }
     const data = (await resp.json()) as { text?: string };
@@ -73,7 +66,7 @@ async function transcribeBlob(blob: Blob, filename: string): Promise<string | nu
     return text || null;
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    console.warn("[ASR] transcription error:", msg);
+    console.warn("[ASR][OpenAI兼容] transcription error:", msg);
     return null;
   }
 }
@@ -89,36 +82,48 @@ async function fetchAudioBlob(voiceUrl: string): Promise<{ blob: Blob; filename:
 }
 
 /**
- * 同进程刚落盘的录音：直接读文件转写，不依赖 PUBLIC_BASE_URL 与本机端口一致。
+ * 同进程刚落盘的录音：腾讯云一句话识别 → OpenAI 兼容转写。
  */
 export async function speechToTextFromLocalPath(localPath: string, originalName?: string): Promise<string | null> {
+  if (process.env.MOCK_ASR_TEXT) return process.env.MOCK_ASR_TEXT.trim();
+
+  const tencentText = await transcribeLocalFileWithTencent(localPath, originalName);
+  if (tencentText) return tencentText;
+
   try {
     const buf = await fs.readFile(localPath);
     const ext = path.extname(originalName || localPath) || ".mp3";
     const name = (originalName && path.basename(originalName)) || `voice${ext}`;
     const blob = new Blob([buf]);
-    return transcribeBlob(blob, name);
+    const openaiText = await transcribeOpenAiCompatibleBlob(blob, name);
+    if (openaiText) return openaiText;
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     console.warn("[ASR] read local file error:", msg);
-    return null;
   }
+
+  const kimiOnly = norm(process.env.KIMI_API_KEY) || norm(process.env.MOONSHOT_API_KEY);
+  if (kimiOnly) {
+    console.warn(
+      "[ASR] 未得到转写结果。Kimi 不能做听写；请配置 TENCENTCLOUD_SECRET_ID+KEY（推荐国内）或 OPENAI_API_KEY，或小程序端使用微信同声传译插件。开发可设 MOCK_ASR_TEXT。",
+    );
+  }
+  return null;
 }
 
 /**
- * 语音转文字：仅支持 OpenAI 兼容的 POST /v1/audio/transcriptions（如 OpenAI 官方或其它代理）。
- * 未配置有效密钥或调用失败时返回 null。
+ * 通过 URL 拉取音频后：腾讯云 → OpenAI 兼容。
  */
 export async function speechToTextFromUrl(voiceUrl: string): Promise<string | null> {
   if (process.env.MOCK_ASR_TEXT) return process.env.MOCK_ASR_TEXT.trim();
-  if (!resolveOpenAiCompatibleAsr()) return null;
-  try {
-    const audio = await fetchAudioBlob(voiceUrl);
-    if (!audio) return null;
-    return transcribeBlob(audio.blob, audio.filename);
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    console.warn("[ASR] transcription error:", msg);
-    return null;
-  }
+
+  const audio = await fetchAudioBlob(voiceUrl);
+  if (!audio) return null;
+
+  const ab = await audio.blob.arrayBuffer();
+  const buf = Buffer.from(ab);
+  const tencentText = await transcribeBufferWithTencent(buf, audio.filename);
+  if (tencentText) return tencentText;
+
+  return transcribeOpenAiCompatibleBlob(audio.blob, audio.filename);
 }

@@ -34,5 +34,11 @@
     "connectSocket": 30000,
     "uploadFile": 120000,
     "downloadFile": 60000
+  },
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.4",
+      "provider": "wx069ba97219f66d99"
+    }
   }
 }

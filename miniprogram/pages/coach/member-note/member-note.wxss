@@ -19,6 +19,12 @@
   margin-bottom: 20rpx;
 }
 
+.hint-sub {
+  font-size: 22rpx;
+  color: #16a34a;
+  margin-top: -12rpx;
+}
+
 .rec-row {
   display: flex;
   flex-direction: column;

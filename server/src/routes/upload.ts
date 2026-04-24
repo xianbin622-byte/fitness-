@@ -50,7 +50,7 @@ r.post("/voice", authMiddleware, requireRole("COACH"), upload.single("file"), as
   const transcript = (asrText || "").trim() || null;
 
   const noTranscriptHint =
-    "上传成功；真实转写需在服务器配置 OPENAI_API_KEY（或 ASR_API_KEY+兼容 base），Kimi 密钥不能用于语音接口";
+    "上传成功；未转写出文字。请：1）小程序端使用微信同声传译插件；或 2）服务器配置 TENCENTCLOUD_SECRET_ID+KEY（一句话识别）或 OPENAI_API_KEY。Kimi 仅用于文本总结，不做听写。";
 
   return res.json({
     ok: true,
