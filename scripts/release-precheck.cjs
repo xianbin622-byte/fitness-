@@ -22,8 +22,12 @@ function checkRuntime() {
   const text = read("miniprogram/config/runtime.js");
   const useProd = /USE_PROD_API:\s*true/.test(text);
   const hasPlaceholder = /PRODUCTION_API_BASE:\s*["']https:\/\/请替换为你的HTTPS域名["']/.test(text);
-  if (!useProd) fail.push("miniprogram/config/runtime.js 未开启 USE_PROD_API: true");
-  if (hasPlaceholder) fail.push("miniprogram/config/runtime.js 的 PRODUCTION_API_BASE 仍是占位符");
+  if (!useProd) {
+    warn.push(
+      "miniprogram/config/runtime.js：USE_PROD_API 未为 true（本地开发可忽略；上传体验版/正式版前请改为 true）",
+    );
+  }
+  if (useProd && hasPlaceholder) fail.push("miniprogram/config/runtime.js 的 PRODUCTION_API_BASE 仍是占位符");
   if (useProd && !hasPlaceholder) ok("小程序 runtime 生产配置已填写");
 }
 

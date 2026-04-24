@@ -49,14 +49,17 @@ r.post("/voice", authMiddleware, requireRole("COACH"), upload.single("file"), as
   const asrText = await speechToTextFromLocalPath(file.path, file.originalname);
   const transcript = (asrText || "").trim() || null;
 
+  const noTranscriptHint =
+    "上传成功；真实转写需在服务器配置 OPENAI_API_KEY（或 ASR_API_KEY+兼容 base），Kimi 密钥不能用于语音接口";
+
   return res.json({
     ok: true,
     data: {
       voiceUrl,
-      /** OpenAI 兼容 ASR（Moonshot 等）；未配 key 或失败则为 null */
+      /** OpenAI 兼容 /v1/audio/transcriptions；未配 key 或失败则为 null */
       transcript,
     },
-    message: transcript ? "上传成功，已完成转文字" : "上传成功，自动转写暂不可用",
+    message: transcript ? "上传成功，已完成转文字" : noTranscriptHint,
   });
 });
 
