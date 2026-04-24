@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "会员工作台"
+  "navigationBarTitleText": "会员首页",
+  "navigationBarBackgroundColor": "#F5F7FA",
+  "navigationBarTextStyle": "black"
 }

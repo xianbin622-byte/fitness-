@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "教练工作台"
+  "navigationBarTitleText": "教练首页",
+  "navigationBarBackgroundColor": "#F5F7FA",
+  "navigationBarTextStyle": "black"
 }

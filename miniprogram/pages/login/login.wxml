@@ -1,17 +1,88 @@
-<view class="page safe-bottom">
-  <view class="hero">
-    <text class="hero-title">健身私教</text>
-    <text class="hero-sub">会员预约 · 身体数据 · 课程闪记</text>
-  </view>
-  <view class="card">
-    <input class="input" placeholder="手机号" type="number" maxlength="11" value="{{phone}}" bindinput="onPhone" />
-    <view class="row-sms">
-      <input class="input input-sms" placeholder="短信验证码" type="number" maxlength="6" value="{{smsCode}}" bindinput="onSms" />
-      <button class="btn-sms" disabled="{{countdown>0}}" bindtap="sendSms">{{countdown>0 ? countdown+'s' : '获取验证码'}}</button>
+<view class="page figma-page-bg">
+  <view class="nav" style="padding-top: {{statusBarH}}px">
+    <view class="nav-row">
+      <text class="nav-back" bindtap="goBack">‹</text>
+      <text class="nav-brand">登录</text>
+      <text class="nav-help" bindtap="onHelp">?</text>
     </view>
-    <input class="input" placeholder="密码（仅演示种子账号）" password value="{{password}}" bindinput="onPwd" />
-    <text class="hint">优先使用验证码登录；种子账号 13800000001 / 123456 可填密码</text>
-    <button class="btn-primary" bindtap="onLogin">登录</button>
-    <navigator url="/pages/register/register" class="link">没有账号？去注册</navigator>
+  </view>
+
+  <scroll-view class="scroll" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="main">
+      <view class="logo-box">✦</view>
+      <text class="headline">AI Fitness Coach OS</text>
+      <text class="subhead">欢迎回来，使用邮箱验证码或微信快速登录</text>
+
+      <view class="form-card">
+        <view class="field">
+          <text class="label">电子邮箱</text>
+          <input
+            class="line-input"
+            type="text"
+            placeholder="name@example.com"
+            placeholder-class="ph"
+            value="{{email}}"
+            bindinput="onEmail"
+          />
+        </view>
+
+        <view class="field field-row">
+          <view class="field-grow">
+            <text class="label">验证码</text>
+            <input
+              class="line-input"
+              type="number"
+              maxlength="6"
+              placeholder="请输入6位验证码"
+              placeholder-class="ph"
+              value="{{smsCode}}"
+              bindinput="onSms"
+            />
+          </view>
+          <text class="send-code {{countdown>0 ? 'send-code-disabled' : ''}}" bindtap="sendEmailCode">
+            {{countdown>0 ? countdown+'s' : '获取验证码'}}
+          </text>
+        </view>
+
+        <button class="btn-main" bindtap="onLogin">立即登录</button>
+        <button class="btn-wx" bindtap="openWxModal">微信快捷登录</button>
+
+        <view class="pwd-toggle" bindtap="togglePwdDemo">
+          <text>{{showPwdDemo ? '收起密码登录（演示）' : '演示账号 · 密码登录'}}</text>
+        </view>
+        <view wx:if="{{showPwdDemo}}" class="demo-box">
+          <input
+            class="demo-input"
+            placeholder="手机号 或 与密码对应的邮箱"
+            placeholder-class="ph"
+            value="{{demoPhone}}"
+            bindinput="onDemoPhone"
+          />
+          <input
+            class="demo-input"
+            password
+            placeholder="密码"
+            placeholder-class="ph"
+            value="{{password}}"
+            bindinput="onPwd"
+          />
+        </view>
+      </view>
+
+      <view class="reg-row" bindtap="goRegister">
+        <text class="reg-muted">还没有账号？</text>
+        <text class="reg-link">立即注册</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="wx-mask" wx:if="{{wxModalVisible}}" catchtouchmove="noop">
+    <view class="wx-sheet" catchtap="noop">
+      <text class="wx-sheet-title">微信快捷登录</text>
+      <text class="wx-sheet-desc">使用当前已注册的微信账号登录，无需验证码。</text>
+      <text class="wx-sheet-desc wx-sheet-desc2">若首次使用，请从首页选择角色后在注册页完成授权。须先启动本机后端并保持 apiBase 端口一致；本地未配微信密钥时会自动模拟 openid。</text>
+      <button class="btn-gold wx-sheet-btn" bindtap="runWechatLogin">确认授权并登录</button>
+      <text class="wx-sheet-cancel" bindtap="closeWxModal">取消</text>
+    </view>
   </view>
 </view>

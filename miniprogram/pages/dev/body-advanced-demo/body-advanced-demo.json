@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "3D 体型 Advanced",
-  "usingComponents": {
-    "body-advanced": "/components/body-advanced/index"
-  }
-}

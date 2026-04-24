@@ -1,0 +1,34 @@
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero compact">
+    <text class="figma-hero-h1">欢迎加入</text>
+    <text class="hero-sub">请填写身体数据与运动偏好，便于为你推荐教练并生成训练建议</text>
+  </view>
+
+  <view class="figma-card">
+    <text class="field-label">性别</text>
+    <picker mode="selector" range="{{genderLabels}}" value="{{genderIndex}}" bindchange="onGender">
+      <view class="picker-like">{{genderLabels[genderIndex]}}</view>
+    </picker>
+    <text class="field-label">身高（cm）</text>
+    <input class="field-input" type="digit" placeholder="例如 175" value="{{heightCm}}" bindinput="onHeight" />
+    <text class="field-label">体重（kg）</text>
+    <input class="field-input" type="digit" placeholder="例如 70" value="{{weightKg}}" bindinput="onWeight" />
+    <text class="field-label">体脂率（%）</text>
+    <input class="field-input" type="digit" placeholder="例如 18" value="{{bodyFatPct}}" bindinput="onFat" />
+    <text class="field-label">骨骼肌率（%）</text>
+    <input class="field-input" type="digit" placeholder="可选" value="{{skeletalMusclePct}}" bindinput="onMuscle" />
+    <text class="field-label">腰围（cm）</text>
+    <input class="field-input" type="digit" placeholder="可选" value="{{waistCm}}" bindinput="onWaist" />
+    <text class="field-label">臀围（cm）</text>
+    <input class="field-input" type="digit" placeholder="可选，用于腰臀比" value="{{hipCm}}" bindinput="onHip" />
+    <text class="field-hint" wx:if="{{whr}}">腰臀比约 {{whr}}</text>
+    <text class="field-label">生日</text>
+    <picker mode="date" value="{{birthday}}" end="{{today}}" bindchange="onBirth">
+      <view class="picker-like">{{birthday || "选择日期"}}</view>
+    </picker>
+    <text class="field-label">运动偏好</text>
+    <input class="field-input" placeholder="例如：力量、跑步、瑜伽" value="{{exercisePreference}}" bindinput="onPref" />
+  </view>
+
+  <button class="figma-btn-grad sub" disabled="{{submitting}}" bindtap="onSubmit">保存并推荐教练</button>
+</view>

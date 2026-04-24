@@ -1,0 +1,43 @@
+<view class="page figma-page-bg">
+  <view class="safe-wrap" style="padding-top: {{statusBarH}}px">
+    <view class="logo-wrap">
+      <view class="logo-box">✦</view>
+      <text class="headline">AI Fitness Coach OS</text>
+      <text class="headline-sub">智能健身教练管理系统</text>
+    </view>
+
+    <text class="role-tip">SELECT YOUR ROLE</text>
+
+    <view class="card {{selectedRole === 'MEMBER' ? 'selected' : ''}}" data-role="MEMBER" bindtap="selectRole">
+      <view class="card-body">
+        <view class="card-text">
+          <text class="title">Member</text>
+          <text class="desc">训练与成长</text>
+        </view>
+        <view class="icon-wrap {{selectedRole === 'MEMBER' ? 'on' : ''}}">
+          <text class="icon-glyph">✓</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card {{selectedRole === 'COACH' ? 'selected' : ''}}" data-role="COACH" bindtap="selectRole">
+      <view class="card-body">
+        <view class="card-text">
+          <text class="title">Coach</text>
+          <text class="desc">管理与成长</text>
+        </view>
+        <view class="icon-wrap {{selectedRole === 'COACH' ? 'on' : ''}}">
+          <text class="icon-glyph">✓</text>
+        </view>
+      </view>
+    </view>
+
+    <button class="continue-btn" bindtap="goRegister">Continue</button>
+    <view class="terms">
+      <text class="terms-text">By continuing, you agree to our </text>
+      <text class="terms-link">Terms</text>
+      <text class="terms-text"> and </text>
+      <text class="terms-link">Privacy Policy</text>
+    </view>
+  </view>
+</view>

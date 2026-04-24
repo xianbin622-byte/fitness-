@@ -1,8 +1,34 @@
-<view class="page safe-bottom">
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero compact">
+    <text class="figma-hero-h1">我的会员</text>
+    <text class="hero-sub">查看当前绑定会员</text>
+  </view>
+  <button class="figma-btn-grad ghost create-btn" loading="{{creatingVirtual}}" disabled="{{creatingVirtual}}" bindtap="onCreateVirtualMember">
+    新建虚拟会员并测试闪记笔
+  </button>
   <block wx:for="{{list}}" wx:key="id">
-    <navigator class="card" url="/pages/coach/member-detail/member-detail?id={{item.id}}">
+    <view class="figma-card member-tap" data-id="{{item.id}}" bindtap="onOpenNote">
       <text class="title">{{item.nickname}}</text>
       <text class="sub">手机 {{item.phone}}</text>
-    </navigator>
+      <text class="link-hint">课后笔记与语音转写（生成会员明日建议）›</text>
+    </view>
   </block>
+  <view wx:if="{{!list.length}}" class="figma-card">
+    <text class="sub">暂无会员</text>
+  </view>
+  <view class="tabbar-placeholder"></view>
+  <view class="coach-tabbar">
+    <view class="tab-item {{currentTab === 'home' ? 'on' : ''}}" data-tab="home" bindtap="onTabTap">
+      <text class="tab-label">首页</text>
+    </view>
+    <view class="tab-item {{currentTab === 'members' ? 'on' : ''}}" data-tab="members" bindtap="onTabTap">
+      <text class="tab-label">会员</text>
+    </view>
+    <view class="tab-item {{currentTab === 'schedule' ? 'on' : ''}}" data-tab="schedule" bindtap="onTabTap">
+      <text class="tab-label">课程</text>
+    </view>
+    <view class="tab-item {{currentTab === 'growth' ? 'on' : ''}}" data-tab="growth" bindtap="onTabTap">
+      <text class="tab-label">成长</text>
+    </view>
+  </view>
 </view>

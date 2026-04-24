@@ -1,6 +1,0 @@
-<view class="page safe-bottom">
-  <view class="card">
-    <view class="hint">包内 Duck.glb，可滑动旋转；松手后缓慢自转。替换人物模型时改 <text class="mono">modelPath</text>。</view>
-    <body-gltf modelPath="assets/models/duck.glb" />
-  </view>
-</view>

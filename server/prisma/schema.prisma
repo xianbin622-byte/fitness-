@@ -13,9 +13,27 @@ model User {
   id           String   @id @default(uuid())
   role         String
   nickname     String
-  phone        String   @unique
+  /// 与手机号二选一：微信快捷登录用户可无手机号
+  phone        String?  @unique
+  /// 小程序 wx.login code 换 openid，唯一绑定
+  wechatOpenId String?  @unique @map("wechat_open_id")
+  /// 用于邮箱验证码登录；微信用户可空
+  email        String?  @unique
   avatar       String?
   passwordHash String   @map("password_hash")
+  /// 会员：身体与偏好（首登引导页填写后写入）
+  heightCm         Float?    @map("height_cm")
+  weightKg         Float?    @map("weight_kg")
+  bodyFatPct       Float?    @map("body_fat_pct")
+  skeletalMusclePct Float?   @map("skeletal_muscle_pct")
+  waistCm          Float?    @map("waist_cm")
+  hipCm            Float?    @map("hip_cm")
+  birthday         DateTime? @map("birthday")
+  exercisePreference String? @map("exercise_preference")
+  /// 会员：MALE / FEMALE / UNSPECIFIED
+  gender         String?  @map("gender")
+  /// 非空即表示已填过首登身体资料
+  memberProfileAt  DateTime? @map("member_profile_at")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
@@ -67,6 +85,14 @@ model CoachSchedule {
   endTime     String   @map("end_time")
   isAvailable Boolean  @default(true) @map("is_available")
   isClosed    Boolean  @default(false) @map("is_closed")
+  /// 展示用课程名，如「器械普拉提」
+  title       String?
+  /// COURSE 团课/小班 | PRIVATE 私教
+  slotKind    String   @default("COURSE") @map("slot_kind")
+  /// 最多可预约人数（含私教 1）
+  maxBookings Int      @default(1) @map("max_bookings")
+  /// UI 配色：pilates | mat | fitness | yoga | private | default
+  theme       String?
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -82,7 +108,7 @@ model Appointment {
   id              String   @id @default(uuid())
   coachId         String   @map("coach_id")
   memberId        String   @map("member_id")
-  scheduleId      String   @unique @map("schedule_id")
+  scheduleId      String   @map("schedule_id")
   appointmentDate DateTime @map("appointment_date")
   startTime       String   @map("start_time")
   endTime         String   @map("end_time")
@@ -95,15 +121,18 @@ model Appointment {
   schedule     CoachSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
   courseRecord CourseRecord?
 
+  @@unique([scheduleId, memberId])
   @@index([memberId, appointmentDate])
   @@index([coachId, appointmentDate])
+  @@index([scheduleId])
   @@map("appointments")
 }
 
 model BodyMeasurement {
   id             String   @id @default(uuid())
   memberId       String   @map("member_id")
-  coachId        String   @map("coach_id")
+  /// 教练代录时必填；会员自录可为空
+  coachId        String?  @map("coach_id")
   gender         String?
   age            Int?
   height         Float?
@@ -120,8 +149,8 @@ model BodyMeasurement {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
-  member User @relation("MemberBody", fields: [memberId], references: [id], onDelete: Cascade)
-  coach  User @relation("CoachBody", fields: [coachId], references: [id], onDelete: Cascade)
+  member User  @relation("MemberBody", fields: [memberId], references: [id], onDelete: Cascade)
+  coach  User? @relation("CoachBody", fields: [coachId], references: [id], onDelete: SetNull)
 
   @@index([memberId, recordDate])
   @@map("body_measurements")

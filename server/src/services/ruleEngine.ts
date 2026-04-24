@@ -51,6 +51,20 @@ export function generateSummaryDraft(flash: FlashPayload): string {
   return lines.join("\n");
 }
 
+/** 仅「明日一日」训练安排（给会员端首页，依据上一节课教练文字笔记） */
+export function oneDayPlanFromLastCoachNote(
+  coachNote: string,
+  _exercisePreference?: string,
+): string {
+  const t = (coachNote || "").trim();
+  if (!t) {
+    return "暂无教练上一节课的笔记。教练在课后保存笔记或语音转写后，将在此显示「仅含明日一天」的具体训练建议。";
+  }
+  const flash: FlashPayload = { exercises: [], issues: t, coachNotes: t };
+  const advice = generateNextCourseAdvice(flash, undefined);
+  return "【明日一日训练安排（依据教练上一节课记录）】\n" + advice;
+}
+
 /** 根据问题点与动作生成下次课程建议 */
 export function generateNextCourseAdvice(flash: FlashPayload, body?: BodySnapshot): string {
   const tips: string[] = [];

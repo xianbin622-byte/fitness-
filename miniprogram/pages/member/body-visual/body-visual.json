@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "体型展示",
-  "usingComponents": {
-    "body-silhouette": "/components/body-silhouette/body-silhouette"
-  }
-}

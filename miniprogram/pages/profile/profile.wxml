@@ -1,9 +1,27 @@
-<view class="page safe-bottom">
-  <view class="card" wx:if="{{user}}">
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero compact">
+    <text class="figma-hero-h1">个人中心</text>
+    <text class="hero-sub" wx:if="{{user}}">你好，{{user.nickname || '用户'}}</text>
+  </view>
+
+  <view class="figma-card" wx:if="{{user}}">
     <text class="title">账号信息</text>
     <view class="row"><text class="sub">昵称</text><text>{{user.nickname}}</text></view>
-    <view class="row"><text class="sub">手机</text><text>{{user.phone}}</text></view>
+    <view class="row"><text class="sub">手机</text><text>{{user.phone || '未绑定'}}</text></view>
     <view class="row"><text class="sub">角色</text><text>{{user.role === 'MEMBER' ? '会员' : '教练'}}</text></view>
   </view>
-  <button class="btn-ghost" bindtap="logout">退出登录</button>
+  <button class="figma-btn-ghost" bindtap="logout">退出登录</button>
+
+  <view wx:if="{{user && user.role === 'MEMBER'}}" class="tabbar-placeholder"></view>
+  <view wx:if="{{user && user.role === 'MEMBER'}}" class="member-tabbar three">
+    <view class="tab-item" data-t="home" bindtap="onMemTab">
+      <text class="tab-label">首页</text>
+    </view>
+    <view class="tab-item" data-t="book" bindtap="onMemTab">
+      <text class="tab-label">预约</text>
+    </view>
+    <view class="tab-item on" data-t="mine" bindtap="onMemTab">
+      <text class="tab-label">我的</text>
+    </view>
+  </view>
 </view>

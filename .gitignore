@@ -4,10 +4,14 @@ miniprogram/miniprogram_npm/
 server/node_modules/
 server/dist/
 server/.env
+server/.env.prod
 server/uploads/
 server/dev.db
 server/dev.db-journal
+server/data/ai-exports/
 server/*.log
+_figma_ref/
+
 .DS_Store
 *.log
 .env

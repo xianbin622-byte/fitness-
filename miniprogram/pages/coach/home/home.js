@@ -10,7 +10,7 @@ function isToday(d) {
 }
 
 Page({
-  data: { appts: [], stats: { total: 0, booked: 0, completed: 0 } },
+  data: { appts: [], stats: { total: 0, booked: 0, completed: 0 }, currentTab: "home" },
   onShow() {
     const u = getApp().globalData.user;
     if (!u || u.role !== "COACH") {
@@ -18,7 +18,7 @@ Page({
         title: "提示",
         content: "请以教练身份登录",
         success: (r) => {
-          if (r.confirm) wx.reLaunch({ url: "/pages/login/login" });
+          if (r.confirm) wx.reLaunch({ url: "/pages/entry/role-select/role-select" });
         },
       });
       return;
@@ -45,11 +45,16 @@ Page({
       wx.showToast({ title: e.message || "加载失败", icon: "none" });
     }
   },
-  goFlash(e) {
-    const appointmentId = e.currentTarget.dataset.aid;
-    const memberId = e.currentTarget.dataset.mid;
-    wx.navigateTo({
-      url: "/pages/coach/flash/flash?appointmentId=" + appointmentId + "&memberId=" + memberId,
-    });
+  onTabTap(e) {
+    const tab = e.currentTarget.dataset.tab;
+    const routes = {
+      home: "/pages/coach/home/home",
+      members: "/pages/coach/members/members",
+      schedule: "/pages/coach/schedule/schedule",
+      growth: "/pages/coach/growth/growth",
+    };
+    const target = routes[tab];
+    if (!target || tab === this.data.currentTab) return;
+    wx.reLaunch({ url: target });
   },
 });

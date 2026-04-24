@@ -1,16 +1,61 @@
-<view class="page safe-bottom">
-  <view class="card">
-    <picker mode="selector" range="{{roles}}" range-key="label" value="{{roleIndex}}" bindchange="onRole">
-      <view class="picker">角色：{{roles[roleIndex].label}}</view>
-    </picker>
-    <input class="input" placeholder="昵称" value="{{nickname}}" bindinput="onNick" />
-    <input class="input" placeholder="手机号" type="number" maxlength="11" value="{{phone}}" bindinput="onPhone" />
-    <view class="row-sms">
-      <input class="input input-sms" placeholder="短信验证码" type="number" maxlength="6" value="{{smsCode}}" bindinput="onSms" />
-      <button class="btn-sms" disabled="{{countdown>0}}" bindtap="sendSms">{{countdown>0 ? countdown+'s' : '获取验证码'}}</button>
+<view class="page figma-page-bg">
+  <view class="nav" style="padding-top: {{statusBarH}}px">
+    <view class="nav-row">
+      <text class="nav-back" bindtap="goBack">‹</text>
+      <text class="nav-title">创建账号</text>
+      <view class="nav-placeholder"></view>
     </view>
-    <text class="hint">先获取验证码；开发环境验证码见弹窗或终端日志</text>
-    <button class="btn-primary" bindtap="onReg">注册</button>
-    <navigator url="/pages/login/login" class="link">已有账号返回登录</navigator>
+  </view>
+
+  <scroll-view class="scroll" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="main">
+      <view class="logo-box">✦</view>
+      <text class="headline">加入 AI Fitness Coach OS</text>
+      <text class="subhead">使用微信授权注册，快速进入训练与管理系统</text>
+
+      <view class="form-card">
+      <view class="field" wx:if="{{roleFromEntry}}">
+        <text class="label">角色</text>
+        <view class="picker-line picker-line-static">{{roles[roleIndex].label}}</view>
+        <text class="role-hint">已在首屏选择</text>
+      </view>
+      <view class="field" wx:else>
+        <text class="label">角色</text>
+        <picker mode="selector" range="{{roles}}" range-key="label" value="{{roleIndex}}" bindchange="onRole">
+          <view class="picker-line">{{roles[roleIndex].label}}</view>
+        </picker>
+      </view>
+
+      <view class="field">
+        <text class="label">昵称（可选）</text>
+        <input
+          class="line-input"
+          placeholder="不填则显示为「微信用户」"
+          placeholder-class="ph"
+          value="{{nickname}}"
+          bindinput="onNick"
+        />
+      </view>
+
+      <button class="btn-main" bindtap="openWxModal">微信快捷注册</button>
+      <text class="wx-tip">将弹出授权说明，确认后使用当前微信一键完成注册</text>
+      </view>
+
+      <view class="to-login" bindtap="goLogin">
+        <text class="muted">已有账号？</text>
+        <text class="gold">去登录</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 微信快捷登录说明层 -->
+  <view class="wx-mask" wx:if="{{wxModalVisible}}" catchtouchmove="noop">
+    <view class="wx-sheet" catchtap="noop">
+      <text class="wx-sheet-title">微信快捷注册</text>
+      <text class="wx-sheet-desc">将使用当前微信账号在本小程序内注册，并绑定为「{{roles[roleIndex].label}}」。我们不会获取您的微信密码。</text>
+      <text class="wx-sheet-desc wx-sheet-desc2">使用前请在电脑终端启动后端（server 目录执行 npm start），并保持 app.js 里 apiBase 端口一致。正式环境需配置微信 AppSecret；本地开发未配密钥时服务端会自动模拟 openid。</text>
+      <button class="btn-main wx-sheet-btn" bindtap="runWechatRegister">确认授权并注册</button>
+      <text class="wx-sheet-cancel" bindtap="closeWxModal">取消</text>
+    </view>
   </view>
 </view>

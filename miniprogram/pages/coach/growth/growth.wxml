@@ -1,0 +1,26 @@
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero compact">
+    <text class="figma-hero-h1">教练成长</text>
+    <text class="hero-sub">Lv {{level}} · 主修 {{major}}</text>
+  </view>
+  <view class="figma-card">
+    <text class="title">XP 进度</text>
+    <view class="bar"><view class="bar-inner" style="width: {{(exp/nextExp)*100}}%;"></view></view>
+    <text class="sub">{{exp}} / {{nextExp}}</text>
+  </view>
+  <view class="tabbar-placeholder"></view>
+  <view class="coach-tabbar">
+    <view class="tab-item {{currentTab === 'home' ? 'on' : ''}}" data-tab="home" bindtap="onTabTap">
+      <text class="tab-label">首页</text>
+    </view>
+    <view class="tab-item {{currentTab === 'members' ? 'on' : ''}}" data-tab="members" bindtap="onTabTap">
+      <text class="tab-label">会员</text>
+    </view>
+    <view class="tab-item {{currentTab === 'schedule' ? 'on' : ''}}" data-tab="schedule" bindtap="onTabTap">
+      <text class="tab-label">课程</text>
+    </view>
+    <view class="tab-item {{currentTab === 'growth' ? 'on' : ''}}" data-tab="growth" bindtap="onTabTap">
+      <text class="tab-label">成长</text>
+    </view>
+  </view>
+</view>

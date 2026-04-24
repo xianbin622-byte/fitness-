@@ -1,16 +1,48 @@
-<view class="page safe-bottom">
-  <view class="list">
-    <navigator class="tile" url="/pages/member/coach-list/coach-list">
-      <text class="tile-title">我的教练</text>
-      <text class="tile-desc">选择并绑定教练</text>
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero compact">
+    <text class="figma-hero-h1">预约中心</text>
+    <text class="hero-sub">与 Figma「预约课程 / BookClass」一致：从绑定教练的排期约课，无价格展示。</text>
+  </view>
+
+  <view class="figma-info-grad tight">
+    <text class="info-h">快速入口</text>
+    <text class="info-p">先绑定教练，再在时段表中选绿色可约格完成预约。</text>
+  </view>
+
+  <view class="tile-list">
+    <navigator class="tile-figma" url="/pages/member/coach-list/coach-list" hover-class="tile-hover">
+      <view>
+        <text class="t1">选择教练</text>
+        <text class="t2">浏览教练列表并绑定</text>
+      </view>
+      <text class="chev">›</text>
     </navigator>
-    <navigator class="tile" url="/pages/member/coach-detail/coach-detail">
-      <text class="tile-title">教练时间和预约</text>
-      <text class="tile-desc">查看时段并预约课程</text>
+    <navigator class="tile-figma" url="/pages/member/coach-detail/coach-detail" hover-class="tile-hover">
+      <view>
+        <text class="t1">预约时间</text>
+        <text class="t2">周视图 + 课程/私教（与设计稿同构）</text>
+      </view>
+      <text class="chev">›</text>
     </navigator>
-    <navigator class="tile" url="/pages/member/my-appointments/my-appointments">
-      <text class="tile-title">我的预约</text>
-      <text class="tile-desc">查看与取消预约记录</text>
+    <navigator class="tile-figma" url="/pages/member/classes/classes" hover-class="tile-hover">
+      <view>
+        <text class="t1">我的预约</text>
+        <text class="t2">查看、取消与记录</text>
+      </view>
+      <text class="chev">›</text>
     </navigator>
+  </view>
+
+  <view class="tabbar-placeholder"></view>
+  <view class="member-tabbar three">
+    <view class="tab-item" data-t="home" bindtap="onTabSwitch">
+      <text class="tab-label">首页</text>
+    </view>
+    <view class="tab-item on" data-t="book" bindtap="onTabSwitch">
+      <text class="tab-label">预约</text>
+    </view>
+    <view class="tab-item" data-t="mine" bindtap="onTabSwitch">
+      <text class="tab-label">我的</text>
+    </view>
   </view>
 </view>

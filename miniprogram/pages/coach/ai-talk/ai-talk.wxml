@@ -1,0 +1,16 @@
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero compact">
+    <text class="figma-hero-h1">AI谈单助手</text>
+    <text class="hero-sub">根据会员信息自动生成沟通脚本</text>
+  </view>
+  <view class="figma-card">
+    <text class="title">会员信息</text>
+    <text class="sub">目标：{{memberGoal}}</text>
+    <text class="sub">预算：{{memberBudget}}</text>
+    <text class="sub">顾虑：{{memberConcern}}</text>
+  </view>
+  <view class="figma-card">
+    <text class="title">推荐话术</text>
+    <text class="script">{{script}}</text>
+  </view>
+</view>

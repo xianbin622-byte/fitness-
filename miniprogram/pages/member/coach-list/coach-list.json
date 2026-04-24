@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "选择教练"
+  "navigationBarTitleText": "教练列表",
+  "navigationBarBackgroundColor": "#F5F7FA",
+  "navigationBarTextStyle": "black"
 }

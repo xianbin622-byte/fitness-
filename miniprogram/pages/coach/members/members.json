@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "我的会员"
+  "navigationBarTitleText": "会员列表",
+  "navigationBarBackgroundColor": "#F5F7FA",
+  "navigationBarTextStyle": "black"
 }

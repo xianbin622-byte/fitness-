@@ -1,0 +1,114 @@
+@import "../../../styles/figma-fitness.wxss";
+
+.figma-grad-hero.compact {
+  padding-bottom: 24rpx;
+}
+
+.field-label {
+  display: block;
+  font-size: 26rpx;
+  color: #6b7280;
+  margin-top: 20rpx;
+  margin-bottom: 8rpx;
+}
+
+.field-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20rpx;
+  background: #f3f4f6;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+}
+
+.picker-like {
+  padding: 20rpx;
+  background: #f3f4f6;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #111827;
+}
+
+.card-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8rpx;
+}
+
+.figma-btn-grad.sub.small {
+  margin: 24rpx 0 0;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 28rpx;
+}
+
+.chart-block {
+  margin: 0 24rpx 24rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(15, 23, 42, 0.06);
+}
+
+.chart-title {
+  display: block;
+  font-size: 26rpx;
+  color: #374151;
+  margin-bottom: 8rpx;
+  font-weight: 600;
+}
+
+.cvs {
+  display: block;
+  width: 100%;
+}
+
+.figma-link-out {
+  display: block;
+  margin: 0 32rpx 32rpx;
+  font-size: 28rpx;
+  color: #2563eb;
+}
+
+.tabbar-placeholder {
+  height: 150rpx;
+}
+
+.member-tabbar {
+  position: fixed;
+  left: 24rpx;
+  right: 24rpx;
+  bottom: 24rpx;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1rpx solid #e5e7eb;
+  border-radius: 28rpx;
+  box-shadow: 0 10rpx 28rpx rgba(15, 23, 42, 0.12);
+  padding: 12rpx 10rpx calc(12rpx + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: space-around;
+  z-index: 50;
+}
+
+.member-tabbar.three .tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  border-radius: 20rpx;
+}
+
+.member-tabbar .tab-item.on {
+  background: #ecfdf5;
+}
+
+.member-tabbar .tab-label {
+  color: #6b7280;
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.member-tabbar .tab-item.on .tab-label {
+  color: #16a34a;
+  font-weight: 700;
+}

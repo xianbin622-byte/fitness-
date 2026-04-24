@@ -67,6 +67,38 @@ r.get("/mine", authMiddleware, requireRole("MEMBER"), async (req: AuthedRequest,
   return res.json({ ok: true, data: list });
 });
 
+/** 会员：自录一条身体数据（无教练时 coachId 为空） */
+r.post("/self", authMiddleware, requireRole("MEMBER"), async (req: AuthedRequest, res) => {
+  const b = req.body as {
+    recordDate: string;
+    weight?: number;
+    bodyFat?: number;
+    skeletalMuscle?: number;
+    waist?: number;
+    hip?: number;
+    height?: number;
+    notes?: string;
+  };
+  if (!b.recordDate) {
+    return res.status(400).json({ ok: false, message: "请填写记录日期" });
+  }
+  const row = await prisma.bodyMeasurement.create({
+    data: {
+      memberId: req.user!.sub,
+      coachId: null,
+      recordDate: parseDate(b.recordDate),
+      weight: b.weight,
+      bodyFat: b.bodyFat,
+      skeletalMuscle: b.skeletalMuscle,
+      waist: b.waist,
+      hip: b.hip,
+      height: b.height,
+      notes: b.notes,
+    },
+  });
+  return res.json({ ok: true, data: row });
+});
+
 /** 教练：某会员身体数据 */
 r.get("/member/:memberId", authMiddleware, requireRole("COACH"), async (req: AuthedRequest, res) => {
   const { memberId } = req.params;

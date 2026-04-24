@@ -1,25 +1,25 @@
-<view class="page safe-bottom">
-  <view class="hero">
-    <text class="hero-title">你好，{{user.nickname || '用户'}}</text>
-    <text class="hero-sub">角色：{{roleText}}</text>
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero">
+    <text class="figma-hero-h1">AI Fitness Coach OS</text>
+    <text class="hero-sub">{{user ? ('你好，' + (user.nickname || '用户')) : '未登录，请先选择身份'}}</text>
+    <view class="hero-role">当前角色：{{roleText}}</view>
   </view>
-  <view class="grid">
-    <block wx:if="{{isMember}}">
-      <navigator class="tile" url="/pages/member/home/home">
-        <text class="tile-t">会员工作台</text>
-        <text class="tile-d">预约、数据、课程</text>
-      </navigator>
-    </block>
-    <block wx:if="{{isCoach}}">
-      <navigator class="tile" url="/pages/coach/home/home">
-        <text class="tile-t">教练工作台</text>
-        <text class="tile-d">会员、时间表、闪记</text>
-      </navigator>
-    </block>
-    <navigator class="tile ghost" url="/pages/profile/profile">
-      <text class="tile-t">个人中心</text>
-      <text class="tile-d">账号与安全</text>
-    </navigator>
+
+  <view class="tile-wrap">
+    <view class="tile" wx:if="{{!user || isMember}}" bindtap="goMember">
+      <text class="tile-t">会员端</text>
+      <text class="tile-d">首页 / 预约 / 成长 / 我的课程 / 宠物</text>
+      <text class="tile-arrow">›</text>
+    </view>
+    <view class="tile" wx:if="{{!user || isCoach}}" bindtap="goCoach">
+      <text class="tile-t">教练端</text>
+      <text class="tile-d">工作台 / 课程管理 / 会员 / 成长 / AI谈单</text>
+      <text class="tile-arrow">›</text>
+    </view>
   </view>
-  <button wx:if="{{!user}}" class="btn-primary" bindtap="goLogin">去登录</button>
+
+  <view class="actions">
+    <button wx:if="{{!user}}" class="figma-btn-grad act" bindtap="goLogin">去登录/注册</button>
+    <button wx:if="{{user}}" class="logout" bindtap="logout">退出登录</button>
+  </view>
 </view>

@@ -1,0 +1,67 @@
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero compact">
+    <text class="figma-hero-h1">身体数据与趋势</text>
+    <text class="hero-sub">记录体测变化；曲线结合你在档案中的数据与自录/教练代录。教练笔记中的反馈也会体现在建议里。</text>
+  </view>
+
+  <view class="figma-card">
+    <text class="card-title">新增一条记录</text>
+    <text class="field-label">日期</text>
+    <picker mode="date" value="{{formDate}}" end="{{today}}" bindchange="onFormDate">
+      <view class="picker-like">{{formDate}}</view>
+    </picker>
+    <text class="field-label">体重（kg）</text>
+    <input class="field-input" type="digit" placeholder="选填" value="{{formW}}" bindinput="onInW" />
+    <text class="field-label">体脂率（%）</text>
+    <input class="field-input" type="digit" placeholder="选填" value="{{formF}}" bindinput="onInF" />
+    <text class="field-label">骨骼肌率（%）</text>
+    <input class="field-input" type="digit" placeholder="选填" value="{{formM}}" bindinput="onInM" />
+    <text class="field-label">备注</text>
+    <input class="field-input" placeholder="例如：体测、晨起空腹" value="{{formNote}}" bindinput="onInNote" />
+    <button class="figma-btn-grad sub small" disabled="{{saving}}" bindtap="onSaveRow">保存记录</button>
+  </view>
+
+  <view class="figma-card" wx:if="{{trendText}}">
+    <text class="sub">{{trendText}}</text>
+  </view>
+
+  <view class="chart-block" wx:if="{{hasChart}}">
+    <text class="chart-title">体重 (kg)</text>
+    <canvas
+      canvas-id="cW"
+      class="cvs"
+      style="width: {{cWidth}}px; height: 90px;"
+      disable-scroll="true"
+    ></canvas>
+  </view>
+  <view class="chart-block" wx:if="{{hasChart}}">
+    <text class="chart-title">体脂率 (%)</text>
+    <canvas canvas-id="cF" class="cvs" style="width: {{cWidth}}px; height: 90px;" disable-scroll="true"></canvas>
+  </view>
+  <view class="chart-block" wx:if="{{hasChart}}">
+    <text class="chart-title">骨骼肌率 (%)</text>
+    <canvas canvas-id="cM" class="cvs" style="width: {{cWidth}}px; height: 90px;" disable-scroll="true"></canvas>
+  </view>
+  <view class="chart-block" wx:if="{{hasChart}}">
+    <text class="chart-title">身体综合分</text>
+    <canvas canvas-id="cS" class="cvs" style="width: {{cWidth}}px; height: 90px;" disable-scroll="true"></canvas>
+  </view>
+  <view class="figma-card" wx:if="{{!hasChart && loaded}}">
+    <text class="sub">暂无量表数据。保存一条记录后将显示折线图。</text>
+  </view>
+
+  <navigator class="figma-link-out" url="/pages/profile/profile" hover-class="none">账号与退出登录 ›</navigator>
+
+  <view class="tabbar-placeholder"></view>
+  <view class="member-tabbar three">
+    <view class="tab-item" data-t="home" bindtap="onTab">
+      <text class="tab-label">首页</text>
+    </view>
+    <view class="tab-item" data-t="book" bindtap="onTab">
+      <text class="tab-label">预约</text>
+    </view>
+    <view class="tab-item on" data-t="mine" bindtap="onTab">
+      <text class="tab-label">我的</text>
+    </view>
+  </view>
+</view>

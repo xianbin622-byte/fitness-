@@ -1,0 +1,29 @@
+@import "../../../styles/figma-fitness.wxss";
+
+.figma-grad-hero.compact {
+  padding-bottom: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.hero-sub {
+  display: block;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 6rpx;
+  font-size: 24rpx;
+}
+
+.title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 12rpx;
+}
+
+.script {
+  display: block;
+  color: #374151;
+  font-size: 26rpx;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}

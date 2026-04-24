@@ -1,5 +1,8 @@
 import dotenv from "dotenv";
+/** 保留启动前已设置的 PORT（如 SMOKE_PORT=3099），避免被 .env 里 PORT=3000 盖掉 */
+const portFromEnv = process.env.PORT;
 dotenv.config({ override: true });
+if (portFromEnv) process.env.PORT = portFromEnv;
 import path from "path";
 import express from "express";
 import cors from "cors";
@@ -11,6 +14,9 @@ import { bodyRouter } from "./routes/body";
 import { coursesRouter } from "./routes/courses";
 import { uploadRouter } from "./routes/upload";
 import { aiRouter } from "./routes/ai";
+import { memberProfileSave, memberRouter } from "./routes/member";
+import { dataExportRouter } from "./routes/dataExport";
+import { authMiddleware, requireRole } from "./middleware/auth";
 
 const app = express();
 const preferredPort = Number(process.env.PORT) || 3000;
@@ -37,6 +43,10 @@ app.get("/", (_req, res) => {
 
 app.get("/health", (_req, res) => res.json({ ok: true, service: "fitness-coach-api" }));
 
+/** 首登身体资料：在根应用上注册，避免仅依赖子 Router 时旧构建未包含路径；小程序用 POST */
+app.post("/api/member/profile", authMiddleware, requireRole("MEMBER"), memberProfileSave);
+app.put("/api/member/profile", authMiddleware, requireRole("MEMBER"), memberProfileSave);
+
 app.use("/api/auth", authRouter);
 app.use("/api/coaches", coachesRouter);
 app.use("/api/schedules", schedulesRouter);
@@ -45,6 +55,8 @@ app.use("/api/body", bodyRouter);
 app.use("/api/courses", coursesRouter);
 app.use("/api/upload", uploadRouter);
 app.use("/api/ai", aiRouter);
+app.use("/api/member", memberRouter);
+app.use("/api/data-export", dataExportRouter);
 
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error(err);

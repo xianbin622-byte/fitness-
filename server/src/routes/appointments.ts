@@ -29,6 +29,11 @@ r.post("/book", authMiddleware, requireRole("MEMBER"), async (req: AuthedRequest
       });
       if (!rel) throw new Error("NOT_BOUND");
 
+      const bookedCount = await tx.appointment.count({
+        where: { scheduleId, status: "BOOKED" },
+      });
+      if (bookedCount >= schedule.maxBookings) throw new Error("FULL");
+
       await tx.appointment.create({
         data: {
           coachId: schedule.coachId,
@@ -46,9 +51,10 @@ r.post("/book", authMiddleware, requireRole("MEMBER"), async (req: AuthedRequest
     return res.json({ ok: true, message: "预约成功", data: result });
   } catch (e: unknown) {
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-      return res.status(409).json({ ok: false, message: "该时段已被预约，请刷新后重选" });
+      return res.status(409).json({ ok: false, message: "您已预约该时段，请勿重复提交" });
     }
     const msg = e instanceof Error ? e.message : "";
+    if (msg === "FULL") return res.status(400).json({ ok: false, message: "该时段已满员" });
     if (msg === "SLOT_INVALID") return res.status(400).json({ ok: false, message: "时段不可用或已关闭" });
     if (msg === "DAY_CLOSED") return res.status(400).json({ ok: false, message: "教练已关闭该日预约" });
     if (msg === "NOT_BOUND") return res.status(403).json({ ok: false, message: "请先选择并绑定该教练" });

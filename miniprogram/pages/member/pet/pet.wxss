@@ -1,0 +1,30 @@
+@import "../../../styles/figma-fitness.wxss";
+
+.figma-grad-hero.compact {
+  padding-bottom: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.hero-sub {
+  display: block;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 6rpx;
+  font-size: 24rpx;
+}
+
+.pet-card {
+  text-align: center;
+}
+
+.emoji {
+  display: block;
+  font-size: 120rpx;
+  margin-bottom: 8rpx;
+}
+
+.line {
+  display: block;
+  color: #111827;
+  font-size: 28rpx;
+  margin-bottom: 10rpx;
+}

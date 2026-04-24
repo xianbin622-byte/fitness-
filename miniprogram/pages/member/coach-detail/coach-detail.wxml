@@ -1,38 +1,126 @@
-<view class="page safe-bottom">
-  <view class="card">
-    <text class="title">选择日期</text>
-    <picker mode="date" value="{{date}}" bindchange="onDate">
-      <view class="picker">{{date}}</view>
-    </picker>
-    <text class="sub" wx:if="{{dayClosed}}">该日教练已关闭全天预约</text>
-    <view class="legend">
-      <text class="lg lg-a">可预约 {{summary.available}}</text>
-      <text class="lg lg-m">我已约 {{summary.mine}}</text>
-      <text class="lg lg-f">已满 {{summary.full}}</text>
-      <text class="lg lg-c">已关闭 {{summary.closed}}</text>
+<view class="page figma-page-bg safe-bottom">
+  <view class="no-coach" wx:if="{{!coachId}}">
+    <text>尚未绑定教练，请先到教练列表选择并绑定。</text>
+    <navigator class="nc-link" url="/pages/member/coach-list/coach-list">去选择教练</navigator>
+  </view>
+  <view wx:if="{{!coachId}}" class="tabbar-placeholder"></view>
+  <view wx:if="{{!coachId}}" class="member-tabbar three">
+    <view class="tab-item" data-t="home" bindtap="onTabSwitch">
+      <text class="tab-label">首页</text>
+    </view>
+    <view class="tab-item on" data-t="book" bindtap="onTabSwitch">
+      <text class="tab-label">预约</text>
+    </view>
+    <view class="tab-item" data-t="mine" bindtap="onTabSwitch">
+      <text class="tab-label">我的</text>
     </view>
   </view>
-  <view class="slot-grid">
-    <block wx:for="{{slots}}" wx:key="id">
-      <view class="slot {{item.status}}">
-        <text class="time">{{item.startTime}}</text>
-        <text class="state">
-          {{item.status === 'available' ? '可预约' : item.status === 'mine' ? '我已预约' : item.status === 'full' ? '已满' : '已关闭'}}
-        </text>
-        <button
-          size="mini"
-          class="book-btn"
-          data-id="{{item.id}}"
-          bindtap="onBook"
-          wx:if="{{item.status === 'available'}}"
-        >预约</button>
+  <block wx:else>
+  <view class="white-head" wx:if="{{coachInfo}}">
+    <view class="profile-row">
+      <view class="figma-avatar-grad">{{coachInfo.initial}}</view>
+      <view class="profile-meta">
+        <text class="profile-name">{{coachInfo.name}}</text>
+        <view class="rate-row">
+          <text class="star">★</text>
+          <text class="rate-num">{{coachInfo.rating}}</text>
+          <text class="rate-sub">私教/团课以教练排期为准，无价目展示</text>
+        </view>
+        <text class="exp-line" wx:if="{{coachInfo.phone}}">电话 {{coachInfo.phone}}</text>
       </view>
-    </block>
+    </view>
+    <view class="spec-row">
+      <text class="figma-tag-gray">可预约</text>
+      <text class="figma-tag-gray">已绑定</text>
+    </view>
+    <view class="bio-box">
+      <text class="bio-title">教练介绍</text>
+      <text class="bio-t">在下方时间格中选择时段并预约；与 Figma「预约课程」流程一致，数据来自本教练的实时排期。</text>
+    </view>
   </view>
-  <view wx:if="{{!slots.length}}" class="card">
-    <text class="sub">当日暂无可展示时段</text>
+
+  <view class="figma-info-grad">
+    <text class="info-h">选择上课时间</text>
+    <text class="info-p">与「预约课程」设计稿相同：点绿色可约格预约；已约/已满/闭店会禁用。</text>
   </view>
-  <view class="card hint-card">
-    <text class="sub">提示：已满/已关闭时段不可预约；“我已预约”表示当前会员已占用该时段。</text>
+
+  <view class="sub-hero-m">
+    <view class="sub-tabs-m">
+      <view
+        class="sub-tab-m {{slotTab === 'course' ? 'on' : ''}}"
+        data-tab="course"
+        bindtap="onTab"
+      >课程</view>
+      <view
+        class="sub-tab-m {{slotTab === 'private' ? 'on' : ''}}"
+        data-tab="private"
+        bindtap="onTab"
+      >私教</view>
+    </view>
+    <view class="month-row-m">
+      <text class="month-text-m">{{weekTitle}}</text>
+      <view class="week-nav-m">
+        <text class="nav-btn-m" bindtap="prevWeek">‹</text>
+        <text class="nav-btn-m" bindtap="nextWeek">›</text>
+      </view>
+    </view>
   </view>
+
+  <view class="legend-m">
+    <text class="lg-m lg-a">可约 {{summary.available}}</text>
+    <text class="lg-m lg-b">我已约 {{summary.mine}}</text>
+    <text class="lg-m lg-c">已满 {{summary.full}}</text>
+    <text class="lg-m lg-d">关闭 {{summary.closed}}</text>
+  </view>
+
+  <scroll-view scroll-x class="week-scroll-m" enhanced show-scrollbar="{{false}}">
+    <view class="week-inner-m">
+      <block wx:for="{{weekDays}}" wx:key="date">
+        <view class="day-col-m">
+          <view class="day-head-m">
+            <text class="wd-m">周{{item.weekdayLabel}}</text>
+            <text class="ds-m">{{item.dateShort}}</text>
+            <text wx:if="{{item.isToday}}" class="today-m">今天</text>
+          </view>
+          <view wx:if="{{item.dayClosed}}" class="closed-m">全日关闭</view>
+          <block wx:for="{{item.displaySlots}}" wx:for-item="sl" wx:key="id">
+            <view class="slot-m theme-{{sl.themeCls}} st-{{sl.status}}">
+              <view class="slot-bar-m"></view>
+              <text class="t-time">{{sl.startTime}} - {{sl.endTime}}</text>
+              <text class="t-name">{{sl.title}}</text>
+              <text class="t-cap">上限{{sl.maxBookings}}人 · 已约{{sl.bookedCount}}人</text>
+              <text class="t-state">
+                {{sl.status === 'available' ? '可预约' : sl.status === 'mine' ? '我已预约' : sl.status === 'full' ? '已满' : '已关闭'}}
+              </text>
+              <view
+                wx:if="{{sl.status === 'available'}}"
+                class="book-pill"
+                data-id="{{sl.id}}"
+                catchtap="onBook"
+              >{{sl.startTime}} 预约</view>
+            </view>
+          </block>
+          <view wx:if="{{!item.displaySlots.length && !item.dayClosed}}" class="empty-m">当日无排课</view>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+
+  <view class="tip-box">
+    <text class="tip-t">开课前 1 小时内不可取消；团课在未满员前可继续预约。设计对齐 Figma「预约须知」无价格条。</text>
+  </view>
+
+  <view class="tabbar-placeholder"></view>
+  <view class="member-tabbar three">
+    <view class="tab-item" data-t="home" bindtap="onTabSwitch">
+      <text class="tab-label">首页</text>
+    </view>
+    <view class="tab-item on" data-t="book" bindtap="onTabSwitch">
+      <text class="tab-label">预约</text>
+    </view>
+    <view class="tab-item" data-t="mine" bindtap="onTabSwitch">
+      <text class="tab-label">我的</text>
+    </view>
+  </view>
+  </block>
 </view>

@@ -1,0 +1,16 @@
+{
+  "name": "fitness-coach-app",
+  "private": true,
+  "description": "小程序在 miniprogram/，后端在 server/。勿在根目录执行 npm start（无此脚本）。",
+  "scripts": {
+    "server": "npm run build --prefix server && npm start --prefix server",
+    "server:smoke": "npm run smoke --prefix server",
+    "release:check": "node scripts/release-precheck.cjs",
+    "server:gen-env": "npm run gen-env --prefix server",
+    "export:ai": "npm run export:ai --prefix server",
+    "server:dev": "npm run dev --prefix server",
+    "server:install": "npm install --prefix server",
+    "db:push": "npm run db:push --prefix server",
+    "db:seed": "npm run db:seed --prefix server"
+  }
+}

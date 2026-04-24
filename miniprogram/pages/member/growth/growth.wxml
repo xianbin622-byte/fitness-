@@ -1,0 +1,19 @@
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero compact">
+    <text class="figma-hero-h1">成长系统</text>
+    <text class="hero-sub">Lv {{level}} · XP {{exp}} / {{nextExp}}</text>
+  </view>
+  <view class="figma-card">
+    <text class="title">等级进度</text>
+    <view class="bar"><view class="bar-inner" style="width: {{(exp/nextExp)*100}}%;"></view></view>
+    <text class="sub">完成课程、连续训练可获得更多 XP</text>
+  </view>
+  <view class="figma-card">
+    <text class="title">成就徽章</text>
+    <view class="badge-wrap">
+      <block wx:for="{{badges}}" wx:key="*this">
+        <text class="badge">{{item}}</text>
+      </block>
+    </view>
+  </view>
+</view>

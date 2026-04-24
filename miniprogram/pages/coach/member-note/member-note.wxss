@@ -1,0 +1,70 @@
+@import "../../../styles/figma-fitness.wxss";
+
+.figma-grad-hero.compact {
+  padding-bottom: 24rpx;
+}
+
+.hero-sub {
+  display: block;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 8rpx;
+  font-size: 24rpx;
+}
+
+.hint {
+  display: block;
+  font-size: 24rpx;
+  line-height: 1.5;
+  color: #4b5563;
+  margin-bottom: 20rpx;
+}
+
+.rec-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 24rpx;
+}
+
+.rec-btn {
+  width: 100%;
+  padding: 28rpx;
+  font-size: 30rpx;
+  border-radius: 20rpx;
+  background: #ecfdf5;
+  color: #166534;
+  border: 2rpx solid #86efac;
+}
+
+.rec-btn.on {
+  background: #16a34a;
+  color: #fff;
+  border-color: #15803d;
+}
+
+.rec-tip {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.field-label {
+  display: block;
+  font-size: 26rpx;
+  color: #6b7280;
+  margin-bottom: 8rpx;
+}
+
+.note-area {
+  width: 100%;
+  min-height: 280rpx;
+  box-sizing: border-box;
+  padding: 20rpx;
+  background: #f3f4f6;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+}
+
+.figma-btn-grad.sub {
+  margin: 32rpx 24rpx 60rpx;
+}

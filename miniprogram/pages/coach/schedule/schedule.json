@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "时间表"
+  "navigationBarTitleText": "课程管理",
+  "navigationBarBackgroundColor": "#A8E6CF",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {}
 }

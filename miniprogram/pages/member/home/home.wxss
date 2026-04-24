@@ -1,23 +1,22 @@
-.page {
-  padding: 24rpx;
+@import "../../../styles/figma-fitness.wxss";
+
+.figma-grad-hero.compact {
+  padding-bottom: 24rpx;
 }
 
-.hero {
-  padding: 8rpx 4rpx 18rpx;
-}
-
-.hello {
+.hero-sub {
   display: block;
-  font-size: 44rpx;
-  font-weight: 700;
-  color: #111827;
-}
-
-.coach {
-  display: block;
-  margin-top: 8rpx;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 6rpx;
   font-size: 24rpx;
-  color: #6b7280;
+}
+
+.hero-link {
+  display: inline-block;
+  margin-top: 16rpx;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: underline;
 }
 
 .card-hd {
@@ -79,27 +78,97 @@
   color: #6b7280;
 }
 
-.quick {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12rpx;
-  margin-top: 16rpx;
-}
-
-.qbtn {
-  text-align: center;
-  padding: 16rpx 0;
-  border-radius: 12rpx;
-  background: #eef2ff;
-  color: #1d4ed8;
-  font-size: 26rpx;
-  font-weight: 500;
-}
-
 .summary {
   display: block;
   margin-top: 8rpx;
   color: #374151;
   line-height: 1.6;
   font-size: 26rpx;
+}
+
+.level-card .card-title {
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.level-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.level-num {
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #16a34a;
+}
+
+.level-exp {
+  font-size: 24rpx;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.level-card .bar {
+  height: 12rpx;
+  background: #e5e7eb;
+  border-radius: 999rpx;
+  overflow: hidden;
+  margin-top: 4rpx;
+}
+
+.level-card .bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80, #16a34a);
+  border-radius: 999rpx;
+  max-width: 100%;
+}
+
+.sub-hint {
+  display: block;
+  font-size: 22rpx;
+  color: #9ca3af;
+  margin-top: 8rpx;
+}
+
+.tabbar-placeholder {
+  height: 150rpx;
+}
+
+.member-tabbar {
+  position: fixed;
+  left: 24rpx;
+  right: 24rpx;
+  bottom: 24rpx;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1rpx solid #e5e7eb;
+  border-radius: 28rpx;
+  box-shadow: 0 10rpx 28rpx rgba(15, 23, 42, 0.12);
+  padding: 12rpx 10rpx calc(12rpx + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: space-around;
+  z-index: 50;
+}
+
+.member-tabbar.three .tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  border-radius: 20rpx;
+}
+
+.member-tabbar .tab-item.on {
+  background: #ecfdf5;
+}
+
+.member-tabbar .tab-label {
+  color: #6b7280;
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.member-tabbar .tab-item.on .tab-label {
+  color: #16a34a;
+  font-weight: 700;
 }

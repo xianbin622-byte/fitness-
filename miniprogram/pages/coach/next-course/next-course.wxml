@@ -1,7 +1,0 @@
-<view class="page safe-bottom">
-  <view class="card">
-    <text class="title">下次课程建议</text>
-    <text class="body">{{text}}</text>
-  </view>
-  <text class="sub">内容来自最近一次已生成草稿的课程记录，可在「课程总结确认」页修改。</text>
-</view>

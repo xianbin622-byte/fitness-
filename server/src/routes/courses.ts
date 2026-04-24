@@ -2,7 +2,7 @@ import { Router } from "express";
 import { prisma } from "../lib/prisma";
 import type { AuthedRequest } from "../middleware/auth";
 import { authMiddleware, requireRole } from "../middleware/auth";
-import { type FlashPayload } from "../services/ruleEngine";
+import { type FlashPayload, oneDayPlanFromLastCoachNote } from "../services/ruleEngine";
 import { generateSessionSummary } from "../services/ai.service";
 
 const r = Router();
@@ -36,18 +36,35 @@ r.get("/coach/by-member/:memberId", authMiddleware, requireRole("COACH"), async 
   return res.json({ ok: true, data: last });
 });
 
-/** 会员：下一节课建议与饮食（取最近一次有建议的记录） */
+/** 会员：仅「一日」训练建议 + 饮食（上一节课的教练笔记 / 总结优先，否则再用历史 nextCoursePlan） */
 r.get("/next-advice", authMiddleware, requireRole("MEMBER"), async (req: AuthedRequest, res) => {
-  const last = await prisma.courseRecord.findFirst({
-    where: { memberId: req.user!.sub, NOT: { nextCoursePlan: null } },
+  const memberId = req.user!.sub;
+  const recent = await prisma.courseRecord.findMany({
+    where: { memberId },
+    orderBy: { updatedAt: "desc" },
+    take: 30,
+    include: { member: { select: { exercisePreference: true } } },
+  });
+  const lastWithNote =
+    recent.find((r) => (r.coachNotes || "").trim() || (r.summary || "").trim()) || recent[0];
+  const note = lastWithNote
+    ? (lastWithNote.coachNotes || lastWithNote.summary || "").trim()
+    : "";
+  const pref = lastWithNote?.member?.exercisePreference || undefined;
+  const oneDayTraining = oneDayPlanFromLastCoachNote(note, pref);
+
+  const lastDiet = await prisma.courseRecord.findFirst({
+    where: { memberId, NOT: { dietAdvice: null } },
     orderBy: { updatedAt: "desc" },
   });
   return res.json({
     ok: true,
     data: {
-      nextCoursePlan: last?.nextCoursePlan ?? "暂无，请等待教练课后录入。",
-      dietAdvice: last?.dietAdvice ?? "均衡饮食，足量蛋白质与蔬菜。",
-      summary: last?.summary ?? null,
+      oneDayTraining,
+      nextCoursePlan: oneDayTraining,
+      dietAdvice: lastDiet?.dietAdvice ?? "均衡饮食，足量蛋白质与蔬菜。",
+      summary: lastWithNote?.summary ?? null,
+      coachNotePreview: note ? note.slice(0, 120) : null,
     },
   });
 });
@@ -198,6 +215,53 @@ r.put("/:courseRecordId/confirm", authMiddleware, requireRole("COACH"), async (r
   }
   return res.json({ ok: true, data: updated });
 });
+
+/**
+ * 教练：为某会员记录课后笔记（可来自语音转写 + 手改），并写入「明日一日」建议供会员端首页
+ */
+r.put(
+  "/coach/member/:memberId/session-note",
+  authMiddleware,
+  requireRole("COACH"),
+  async (req: AuthedRequest, res) => {
+    const { memberId } = req.params;
+    const { coachNotes, append } = req.body as { coachNotes?: string; append?: boolean };
+    const rel = await prisma.coachMemberRelation.findFirst({
+      where: { coachId: req.user!.sub, memberId, status: "active" },
+    });
+    if (!rel) return res.status(403).json({ ok: false, message: "非本教练会员" });
+    const text = (coachNotes || "").trim();
+    if (!text) return res.status(400).json({ ok: false, message: "请填写或朗读笔记内容" });
+
+    const member = await prisma.user.findUnique({
+      where: { id: memberId },
+      select: { exercisePreference: true },
+    });
+    let rec = await prisma.courseRecord.findFirst({
+      where: { coachId: req.user!.sub, memberId },
+      orderBy: { updatedAt: "desc" },
+    });
+    if (!rec) {
+      rec = await prisma.courseRecord.create({
+        data: { coachId: req.user!.sub, memberId, coachNotes: text, appointmentId: null },
+      });
+    } else {
+      const merged = append
+        ? [rec.coachNotes, text].filter(Boolean).join("\n")
+        : text;
+      rec = await prisma.courseRecord.update({
+        where: { id: rec.id },
+        data: { coachNotes: merged },
+      });
+    }
+    const oneDay = oneDayPlanFromLastCoachNote(rec.coachNotes || "", member?.exercisePreference || undefined);
+    const updated = await prisma.courseRecord.update({
+      where: { id: rec.id },
+      data: { nextCoursePlan: oneDay },
+    });
+    return res.json({ ok: true, data: updated });
+  },
+);
 
 /** 会员/教练：单条课程详情 */
 r.get("/:id", authMiddleware, async (req: AuthedRequest, res) => {

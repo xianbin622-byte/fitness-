@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "人模 GLB（接入演示）",
-  "usingComponents": {
-    "body-gltf": "/components/body-gltf/index"
-  }
-}

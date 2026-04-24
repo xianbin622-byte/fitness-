@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "首页"
+  "navigationBarTitleText": "角色入口",
+  "navigationBarBackgroundColor": "#F5F7FA",
+  "navigationBarTextStyle": "black"
 }

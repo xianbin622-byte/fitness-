@@ -1,0 +1,49 @@
+@import "../../../styles/figma-fitness.wxss";
+
+.figma-grad-hero.compact {
+  padding-bottom: 24rpx;
+}
+
+.hero-sub {
+  display: block;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.field-label {
+  display: block;
+  font-size: 26rpx;
+  color: #6b7280;
+  margin-top: 20rpx;
+  margin-bottom: 8rpx;
+}
+
+.field-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20rpx;
+  background: #f3f4f6;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+}
+
+.picker-like {
+  padding: 20rpx;
+  background: #f3f4f6;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #111827;
+}
+
+.field-hint {
+  display: block;
+  font-size: 24rpx;
+  color: #16a34a;
+  margin-top: 8rpx;
+}
+
+.figma-btn-grad.sub {
+  margin: 32rpx 24rpx 60rpx;
+}

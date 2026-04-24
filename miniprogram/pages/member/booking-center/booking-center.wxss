@@ -1,31 +1,107 @@
-.page {
-  padding: 24rpx;
+@import "../../../styles/figma-fitness.wxss";
+
+.figma-grad-hero.compact {
+  padding-bottom: 28rpx;
 }
 
-.list {
+.hero-sub {
+  display: block;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  margin-top: 8rpx;
+}
+
+.figma-info-grad.tight {
+  margin: -12rpx 24rpx 20rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.tile-list {
+  padding: 0 24rpx 32rpx;
   display: flex;
   flex-direction: column;
-  gap: 20rpx;
+  gap: 16rpx;
 }
 
-.tile {
-  display: block;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1rpx solid rgba(0, 212, 170, 0.25);
-  border-radius: 16rpx;
-  padding: 28rpx 24rpx;
+.tile-figma {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 32rpx;
+  padding: 32rpx 28rpx;
+  box-shadow: 0 8rpx 28rpx rgba(15, 23, 42, 0.06);
+  border: 1rpx solid rgba(0, 0, 0, 0.04);
 }
 
-.tile-title {
+.tile-hover {
+  opacity: 0.92;
+}
+
+.t1 {
   display: block;
-  color: #00d4aa;
   font-size: 32rpx;
-  font-weight: 600;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 6rpx;
 }
 
-.tile-desc {
+.t2 {
   display: block;
-  margin-top: 8rpx;
-  color: #cde2ff;
   font-size: 24rpx;
+  color: #6b7280;
+}
+
+.chev {
+  font-size: 40rpx;
+  color: #4caf50;
+  font-weight: 300;
+}
+
+.member-tabbar.three {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tabbar-placeholder {
+  height: 150rpx;
+}
+
+.member-tabbar {
+  position: fixed;
+  left: 24rpx;
+  right: 24rpx;
+  bottom: 24rpx;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1rpx solid #e5e7eb;
+  border-radius: 28rpx;
+  box-shadow: 0 10rpx 28rpx rgba(15, 23, 42, 0.12);
+  padding: 12rpx 10rpx calc(12rpx + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: space-around;
+  z-index: 50;
+}
+
+.member-tabbar .tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  border-radius: 20rpx;
+}
+
+.member-tabbar .tab-item.on {
+  background: #ecfdf5;
+}
+
+.member-tabbar .tab-label {
+  color: #6b7280;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.member-tabbar .tab-item.on .tab-label {
+  color: #16a34a;
+  font-weight: 700;
 }

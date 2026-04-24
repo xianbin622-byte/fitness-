@@ -9,10 +9,23 @@ Page({
     userName: "",
     coachName: "未绑定教练",
     nextClass: null,
-    bodySummary: { weight: "-", bodyFat: "-" },
     recentCourse: null,
-    aiTrainingPlan: "",
+    oneDayTraining: "",
+    coachNotePreview: "",
     aiDietAdvice: "",
+    fitness: {
+      level: 1,
+      exp: 0,
+      nextExp: 100,
+      completedClasses: 0,
+      bodyRecords: 0,
+    },
+  },
+  onTabSwitch(e) {
+    const t = e.currentTarget.dataset.t;
+    if (t === "home") return;
+    if (t === "book") wx.reLaunch({ url: "/pages/member/booking-center/booking-center" });
+    if (t === "mine") wx.reLaunch({ url: "/pages/member/mine/mine" });
   },
   async onShow() {
     const u = getApp().globalData.user;
@@ -21,9 +34,13 @@ Page({
         title: "提示",
         content: "请以会员身份登录",
         success: (r) => {
-          if (r.confirm) wx.reLaunch({ url: "/pages/login/login" });
+          if (r.confirm) wx.reLaunch({ url: "/pages/entry/role-select/role-select" });
         },
       });
+      return;
+    }
+    if (!u.memberProfileAt) {
+      wx.reLaunch({ url: "/pages/member/onboarding/onboarding" });
       return;
     }
     this.setData({ userName: u.nickname || "会员" });
@@ -31,13 +48,12 @@ Page({
   },
   async loadHomeData() {
     try {
-      const [coachRes, apptRes, bodyRes, nextRes, courseRes, aiPlanRes] = await Promise.all([
+      const [coachRes, apptRes, nextRes, courseRes, fitRes] = await Promise.all([
         api.myCoach(),
         api.myAppointments(),
-        api.bodyMine(),
-        api.nextAdvice(),
+        api.nextAdvice().catch(() => ({ ok: false })),
         api.courseMine(),
-        api.aiPlan({ goal: "维持" }),
+        api.memberFitness().catch(() => ({ ok: false })),
       ]);
 
       if (coachRes.ok && coachRes.data) {
@@ -53,17 +69,6 @@ Page({
         this.setData({ nextClass: booked[0] || null });
       }
 
-      if (bodyRes.ok) {
-        const list = (bodyRes.data || []).slice().sort((a, b) => new Date(b.recordDate) - new Date(a.recordDate));
-        const last = list[0];
-        this.setData({
-          bodySummary: {
-            weight: last && last.weight != null ? String(last.weight) : "-",
-            bodyFat: last && last.bodyFat != null ? String(last.bodyFat) : "-",
-          },
-        });
-      }
-
       if (courseRes.ok) {
         const first = (courseRes.data || [])[0] || null;
         this.setData({ recentCourse: first });
@@ -71,15 +76,30 @@ Page({
         this.setData({ recentCourse: { summary: nextRes.data.summary } });
       }
 
-      if (aiPlanRes && aiPlanRes.ok && aiPlanRes.data) {
+      if (nextRes.ok && nextRes.data) {
         this.setData({
-          aiTrainingPlan: aiPlanRes.data.trainingPlan || "",
-          aiDietAdvice: aiPlanRes.data.dietAdvice || "",
+          oneDayTraining: nextRes.data.oneDayTraining || nextRes.data.nextCoursePlan || "",
+          coachNotePreview: nextRes.data.coachNotePreview || "",
+          aiDietAdvice: nextRes.data.dietAdvice || "",
         });
       } else {
         this.setData({
-          aiTrainingPlan: "每周3-4次训练，复合动作为主，每次45-60分钟。",
-          aiDietAdvice: "每日蛋白质1.6-2.0g/kg体重，主食粗细搭配，减少高糖饮料。",
+          oneDayTraining: "等待上一节课的教练总结或课后笔记，即可显示明日一日建议。",
+          coachNotePreview: "",
+          aiDietAdvice: "均衡饮食，足量蛋白质与蔬菜。",
+        });
+      }
+
+      if (fitRes && fitRes.ok && fitRes.data) {
+        const d = fitRes.data;
+        this.setData({
+          fitness: {
+            level: d.level ?? 1,
+            exp: d.exp ?? 0,
+            nextExp: d.nextExp ?? 100,
+            completedClasses: d.completedClasses ?? 0,
+            bodyRecords: d.bodyRecords ?? 0,
+          },
         });
       }
     } catch (e) {

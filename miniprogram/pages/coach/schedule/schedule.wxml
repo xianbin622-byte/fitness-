@@ -1,24 +1,139 @@
-<view class="page safe-bottom">
-  <view class="card">
-    <text class="title">日期</text>
-    <picker mode="date" value="{{date}}" bindchange="onDate">
-      <view class="picker">{{date}}</view>
-    </picker>
-    <text class="sub" wx:if="{{dayClosed}}">该日已设为全天关闭（会员端不可约）</text>
-    <button class="btn-primary" bindtap="addTemplate">添加固定模板（07:30-10:30 三节）</button>
-    <view class="row">
-      <input class="input" placeholder="开始 HH:mm" value="{{st}}" bindinput="onSt" />
-      <input class="input" placeholder="结束 HH:mm" value="{{et}}" bindinput="onEt" />
-    </view>
-    <button class="btn-ghost" bindtap="addCustom">添加自定义时段</button>
-  </view>
-  <view class="card">
-    <text class="title">当日时段</text>
-    <block wx:for="{{slots}}" wx:key="id">
-      <view class="slot">
-        <text>{{item.startTime}} - {{item.endTime}}</text>
-        <text class="del" data-id="{{item.id}}" bindtap="onDel">删除</text>
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero">
+    <text class="figma-hero-h1">课程管理</text>
+    <view class="figma-hero-stat">
+      <view class="figma-hero-stat-item">
+        <text class="figma-stat-num">{{statCatalog}}</text>
+        <text class="figma-stat-label">课程模板</text>
       </view>
-    </block>
+      <view class="figma-hero-stat-item">
+        <text class="figma-stat-num">{{statSlots}}</text>
+        <text class="figma-stat-label">本周已排时段</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="figma-tabs-main">
+    <view
+      class="figma-tab-main {{mainTab === 'catalog' ? 'on' : ''}}"
+      data-tab="catalog"
+      bindtap="onMainTab"
+    >课程项目</view>
+    <view
+      class="figma-tab-main {{mainTab === 'schedule' ? 'on' : ''}}"
+      data-tab="schedule"
+      bindtap="onMainTab"
+    >可约时间</view>
+  </view>
+
+  <view wx:if="{{mainTab === 'catalog'}}" class="catalog-wrap">
+    <view class="figma-hint-blue">课程项目仅保留：运动康复 / 私教1:1 / 普拉提。可约时间中会使用当前选中的项目自动排课。</view>
+    <view
+      class="figma-card preset-card {{selectedPresetIndex === index ? 'on' : ''}}"
+      wx:for="{{CLASS_PRESETS}}"
+      wx:key="title"
+      data-index="{{index}}"
+      bindtap="onPickPreset"
+    >
+      <view class="cat-row">
+        <view class="left">
+          <text class="cat-title">{{item.title}}</text>
+          <text class="figma-tag-green">{{item.category}}</text>
+        </view>
+        <text class="cat-meta">{{item.slotKind === 'PRIVATE' ? '私教' : '课程'}} · 默认≤{{item.maxBookings}}人</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else>
+    <view class="figma-hint-blue">点击“编辑时间”设置每天可约时段。课程间隔为 1 小时，支持按当天或整周应用。</view>
+    <view class="month-row">
+      <text class="month-text">{{weekTitle}}</text>
+      <view class="week-nav">
+        <text class="nav-btn" bindtap="prevWeek">‹</text>
+        <text class="nav-btn" bindtap="nextWeek">›</text>
+      </view>
+    </view>
+    <view class="day-list">
+      <view class="figma-card day-card" wx:for="{{weekDaysView}}" wx:key="date">
+        <view class="day-top">
+          <text class="day-title">{{item.dateLabel}}</text>
+          <view class="day-actions">
+            <text class="action action-primary" data-date="{{item.date}}" bindtap="openSetting">编辑时间</text>
+            <text class="action action-green" data-date="{{item.date}}" bindtap="onOpenDay">全开</text>
+            <text class="action" data-date="{{item.date}}" bindtap="onCloseDay">全关</text>
+          </view>
+        </view>
+        <view wx:if="{{item.dayClosed}}" class="closed-hint-figma">该日已关闭</view>
+        <view wx:if="{{!item.dayClosed && item.slots.length}}" class="slots-grid">
+          <view
+            class="slot-chip {{item.isClosed ? 'off' : 'on'}}"
+            wx:for="{{item.slots}}"
+            wx:key="id"
+            data-id="{{item.id}}"
+            data-closed="{{item.isClosed}}"
+            bindtap="onToggleDaySlot"
+          >{{item.startTime}}</view>
+        </view>
+        <text wx:if="{{!item.dayClosed && !item.slots.length}}" class="sub">点击“编辑时间”设置可预约时段</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="mask" wx:if="{{settingMask}}" catchtap="noop">
+    <view class="sheet-figma" catchtap="noop">
+      <text class="sheet-title-figma">设置上课时间</text>
+      <view class="figma-hint-blue">设置第一节课的开始时间，后续课程按 1 小时间隔自动排列</view>
+      <view class="form-row-figma">
+        <view class="picker-col">
+          <text class="form-label-figma">小时</text>
+          <picker mode="selector" range="{{hourOptions}}" value="{{settingHourIndex}}" bindchange="onHourChange">
+            <view class="picker-like-figma">{{settingHourText}}</view>
+          </picker>
+        </view>
+        <view class="picker-col">
+          <text class="form-label-figma">分钟</text>
+          <picker mode="selector" range="{{minuteOptions}}" value="{{settingMinuteIndex}}" bindchange="onMinuteChange">
+            <view class="picker-like-figma">{{settingMinuteText}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="picker-col full">
+        <text class="form-label-figma">课程节数</text>
+        <picker mode="selector" range="{{countOptions}}" value="{{settingCountIndex}}" bindchange="onCountChange">
+          <view class="picker-like-figma">{{settingCount}} 节课</view>
+        </picker>
+      </view>
+      <view class="preview-box">
+        <text class="preview-title">预览时间段（点击单个时段开关）</text>
+        <view class="preview-grid">
+          <view
+            class="preview-chip {{item.enabled ? 'on' : 'off'}}"
+            wx:for="{{previewTimes}}"
+            wx:key="startTime"
+            data-index="{{index}}"
+            catchtap="onTogglePreviewTime"
+          >{{item.startTime}}</view>
+        </view>
+      </view>
+      <button class="figma-btn-grad sheet-confirm" bindtap="applySettingToday">应用到当天</button>
+      <button class="btn-ghost-figma green" bindtap="applySettingWeek">应用到所有日期</button>
+      <button class="btn-ghost-figma" bindtap="closeSetting">取消</button>
+    </view>
+  </view>
+  <view class="tabbar-placeholder"></view>
+  <view class="coach-tabbar">
+    <view class="tab-item {{currentTab === 'home' ? 'on' : ''}}" data-tab="home" bindtap="onTabTap">
+      <text class="tab-label">首页</text>
+    </view>
+    <view class="tab-item {{currentTab === 'members' ? 'on' : ''}}" data-tab="members" bindtap="onTabTap">
+      <text class="tab-label">会员</text>
+    </view>
+    <view class="tab-item {{currentTab === 'schedule' ? 'on' : ''}}" data-tab="schedule" bindtap="onTabTap">
+      <text class="tab-label">课程</text>
+    </view>
+    <view class="tab-item {{currentTab === 'growth' ? 'on' : ''}}" data-tab="growth" bindtap="onTabTap">
+      <text class="tab-label">成长</text>
+    </view>
   </view>
 </view>

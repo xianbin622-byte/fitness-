@@ -1,5 +1,10 @@
-<view class="page safe-bottom">
-  <view class="card">
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero compact">
+    <text class="figma-hero-h1">教练工作台</text>
+    <text class="hero-sub">今日排课与会员状态</text>
+  </view>
+
+  <view class="figma-card">
     <text class="title-sm">今日课程统计</text>
     <view class="stats">
       <view class="stat">
@@ -17,13 +22,13 @@
     </view>
   </view>
 
-  <view class="card">
+  <view class="figma-card">
     <view class="row-hd">
       <text class="title-sm">今日预约</text>
-      <text class="sub">点击可进入闪记</text>
+      <text class="sub">实时同步预约状态</text>
     </view>
     <block wx:for="{{appts}}" wx:key="id">
-      <view class="appt-card" data-aid="{{item.id}}" data-mid="{{item.member.id}}" bindtap="goFlash">
+      <view class="appt-card">
         <view>
           <text class="appt-time">{{item.startTime}}-{{item.endTime}}</text>
           <text class="sub">会员 {{item.member.nickname}}</text>
@@ -36,12 +41,19 @@
     <text wx:if="{{!appts.length}}" class="sub">暂无预约</text>
   </view>
 
-  <view class="card">
-    <text class="title-sm">快捷入口</text>
-    <view class="quick">
-      <navigator class="qbtn primary" url="/pages/coach/schedule/schedule">时间表</navigator>
-      <navigator class="qbtn" url="/pages/coach/members/members">会员</navigator>
-      <navigator class="qbtn" url="/pages/coach/flash/flash">闪记</navigator>
+  <view class="tabbar-placeholder"></view>
+  <view class="coach-tabbar">
+    <view class="tab-item {{currentTab === 'home' ? 'on' : ''}}" data-tab="home" bindtap="onTabTap">
+      <text class="tab-label">首页</text>
+    </view>
+    <view class="tab-item {{currentTab === 'members' ? 'on' : ''}}" data-tab="members" bindtap="onTabTap">
+      <text class="tab-label">会员</text>
+    </view>
+    <view class="tab-item {{currentTab === 'schedule' ? 'on' : ''}}" data-tab="schedule" bindtap="onTabTap">
+      <text class="tab-label">课程</text>
+    </view>
+    <view class="tab-item {{currentTab === 'growth' ? 'on' : ''}}" data-tab="growth" bindtap="onTabTap">
+      <text class="tab-label">成长</text>
     </view>
   </view>
 </view>

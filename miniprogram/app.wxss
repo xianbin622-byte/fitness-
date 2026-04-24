@@ -1,3 +1,5 @@
+@import "./styles/figma-fitness.wxss";
+
 /* UI Design System: Light / Productized */
 page {
   background: #f5f7fb;
@@ -51,4 +53,64 @@ page {
 
 .safe-bottom {
   padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+}
+
+/* 认证入口页背板（全局）：勿用自闭合 <view/>，需在各自 wxml 写完整闭合标签 */
+.auth-bg-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.auth-bg-gradient {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #05070c;
+  background-image:
+    radial-gradient(ellipse 95% 55% at 50% -18%, rgba(34, 211, 238, 0.22), transparent 52%),
+    radial-gradient(ellipse 50% 42% at 96% 96%, rgba(200, 162, 94, 0.15), transparent 48%),
+    radial-gradient(ellipse 42% 36% at 4% 88%, rgba(14, 165, 233, 0.1), transparent 45%),
+    linear-gradient(168deg, #0a1526 0%, #050508 44%, #070d16 100%);
+}
+
+.auth-bg-grid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.55;
+  background-image:
+    linear-gradient(0deg, rgba(56, 189, 248, 0.07) 1rpx, transparent 1rpx),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.07) 1rpx, transparent 1rpx);
+  background-size: 48rpx 48rpx;
+  background-position: center top;
+}
+
+.auth-bg-scan {
+  position: absolute;
+  left: -20%;
+  top: 35%;
+  width: 140%;
+  height: 120rpx;
+  background: linear-gradient(180deg, transparent, rgba(34, 211, 238, 0.06), transparent);
+  transform: rotate(-8deg);
+  opacity: 0.9;
+}
+
+.auth-bg-vignette {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse 85% 70% at 50% 45%, transparent 0%, rgba(3, 4, 8, 0.55) 100%);
 }

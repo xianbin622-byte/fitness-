@@ -1,8 +1,16 @@
 // 全局入口：存储 token 与用户信息
+const runtime = require("./config/runtime.js");
+
+function resolveApiBase() {
+  if (runtime.USE_PROD_API) {
+    return (runtime.PRODUCTION_API_BASE || "").replace(/\/$/, "");
+  }
+  return (runtime.DEVELOPMENT_API_BASE || "http://127.0.0.1:3000").replace(/\/$/, "");
+}
+
 App({
   globalData: {
-    // 本地开发：与后端端口一致（见终端）。正式上线前改为 HTTPS，例如 "https://api.你的域名.com"（须先在微信公众平台配置 request 合法域名）。
-    apiBase: "http://127.0.0.1:3000",
+    apiBase: resolveApiBase(),
     token: "",
     user: null,
   },
@@ -20,6 +28,12 @@ App({
       if (user) this.globalData.user = user;
     } catch (e) {
       console.warn("读取本地存储失败", e);
+    }
+    this.globalData.apiBase = resolveApiBase();
+    if (!runtime.USE_PROD_API) {
+      try {
+        console.log("[apiBase]", this.globalData.apiBase);
+      } catch (e) {}
     }
   },
   setSession(token, user) {

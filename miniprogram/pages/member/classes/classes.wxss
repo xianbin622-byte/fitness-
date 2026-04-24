@@ -1,0 +1,104 @@
+@import "../../../styles/figma-fitness.wxss";
+
+.figma-grad-hero.compact {
+  padding-bottom: 24rpx;
+  margin-bottom: 14rpx;
+}
+
+.hero-sub {
+  display: block;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 6rpx;
+  font-size: 24rpx;
+}
+
+.ap-card {
+  margin-bottom: 16rpx;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.d {
+  font-size: 30rpx;
+  color: #111827;
+  font-weight: 600;
+  max-width: 70%;
+}
+
+.status {
+  font-size: 22rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 999rpx;
+}
+
+.is-booked {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.is-done {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.is-cancel {
+  color: #6b7280;
+  background: #f3f4f6;
+}
+
+.btn-cancel {
+  margin-top: 16rpx;
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 10rpx;
+}
+
+.btn-cancel.disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.tabbar-placeholder {
+  height: 150rpx;
+}
+
+.member-tabbar {
+  position: fixed;
+  left: 24rpx;
+  right: 24rpx;
+  bottom: 24rpx;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1rpx solid #e5e7eb;
+  border-radius: 28rpx;
+  box-shadow: 0 10rpx 28rpx rgba(15, 23, 42, 0.12);
+  padding: 12rpx 10rpx calc(12rpx + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: space-around;
+  z-index: 50;
+}
+
+.member-tabbar.three .tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  border-radius: 20rpx;
+}
+
+.member-tabbar .tab-item.on {
+  background: #ecfdf5;
+}
+
+.member-tabbar .tab-label {
+  color: #6b7280;
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.member-tabbar .tab-item.on .tab-label {
+  color: #16a34a;
+  font-weight: 700;
+}

@@ -33,11 +33,12 @@
 
 ## 四、改小程序里的 API 地址
 
-1. 打开 **`miniprogram/app.js`**。
-2. 将 **`globalData.apiBase`** 改为 **生产环境 API 根地址**，例如：  
-   `https://api.你的域名.com`  
-   （**不要**末尾多写 `/api`，若你代码里接口已带 `/api` 前缀；若你统一写全路径，与现有 `utils/request.js` 约定一致即可。）
-3. 重新编译、真机预览，确认请求不再被域名拦截。
+1. 打开 **`miniprogram/config/runtime.js`**（本项目已拆分环境配置）。
+2. 修改：
+   - `USE_PROD_API: true`
+   - `PRODUCTION_API_BASE: "https://api.你的域名.com"`
+3. 保持 `DEVELOPMENT_API_BASE` 不变，方便后续本地调试继续可用。
+4. 重新编译、真机预览，确认请求不再被域名拦截。
 
 ---
 

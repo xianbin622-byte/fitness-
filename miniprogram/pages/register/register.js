@@ -1,5 +1,18 @@
 const api = require("../../utils/api.js");
 const app = getApp();
+const isBackendUnavailable = (msg = "") =>
+  /connection refused|err_connection_refused|127\.0\.0\.1:3000|无法连接服务器|timeout|请求超时/i.test(msg);
+const getHomeByRole = (user) =>
+  user && user.role === "COACH" ? "/pages/coach/home/home" : "/pages/member/home/home";
+
+function afterAuthEntryPath(user) {
+  if (user && user.role === "COACH") return "/pages/coach/home/home";
+  if (user && user.role === "MEMBER" && !user.memberProfileAt) {
+    return "/pages/member/onboarding/onboarding";
+  }
+  if (user && user.role === "MEMBER") return "/pages/member/home/home";
+  return getHomeByRole(user);
+}
 
 Page({
   data: {
@@ -9,94 +22,83 @@ Page({
     ],
     roleIndex: 0,
     nickname: "",
-    phone: "",
-    smsCode: "",
-    countdown: 0,
+    statusBarH: 0,
+    roleFromEntry: false,
+    wxModalVisible: false,
   },
-  _smsTimer: null,
-  onUnload() {
-    if (this._smsTimer) clearInterval(this._smsTimer);
+  onLoad(query) {
+    const r = query && query.role;
+    if (r === "COACH") {
+      this.setData({ roleIndex: 1, roleFromEntry: true });
+    } else if (r === "MEMBER") {
+      this.setData({ roleIndex: 0, roleFromEntry: true });
+    }
   },
+  noop() {},
   onRole(e) {
     this.setData({ roleIndex: Number(e.detail.value) });
   },
   onNick(e) {
     this.setData({ nickname: e.detail.value });
   },
-  onPhone(e) {
-    this.setData({ phone: e.detail.value });
+  openWxModal() {
+    this.setData({ wxModalVisible: true });
   },
-  onSms(e) {
-    this.setData({ smsCode: e.detail.value });
+  closeWxModal() {
+    this.setData({ wxModalVisible: false });
   },
-  async sendSms() {
-    const { phone, countdown } = this.data;
-    if (countdown > 0) return;
-    if (!/^1\d{10}$/.test((phone || "").trim())) {
-      wx.showToast({ title: "请输入11位手机号", icon: "none" });
-      return;
-    }
-    wx.showLoading({ title: "发送中" });
+  async runWechatRegister() {
+    wx.showLoading({ title: "授权中", mask: true });
+    let ok = false;
     try {
-      const res = await api.sendSms(phone.trim());
-      if (!res.ok) throw new Error(res.message || "失败");
-      if (res.debugCode) {
-        wx.showModal({
-          title: "开发环境",
-          content: "验证码：" + res.debugCode + "\n（请确保本机已启动后端 API）",
-          showCancel: false,
-        });
-      } else {
-        wx.showToast({ title: "已发送", icon: "success" });
+      const loginRes = await new Promise((resolve, reject) => {
+        wx.login({ success: resolve, fail: reject });
+      });
+      if (!loginRes.code) {
+        throw new Error(loginRes.errMsg || "wx.login 未返回 code");
       }
-      this.startCountdown();
-    } catch (e) {
-      wx.showToast({ title: e.message || "发送失败", icon: "none" });
-    } finally {
-      wx.hideLoading();
-    }
-  },
-  startCountdown() {
-    if (this._smsTimer) clearInterval(this._smsTimer);
-    let n = 60;
-    this.setData({ countdown: n });
-    this._smsTimer = setInterval(() => {
-      n -= 1;
-      if (n <= 0) {
-        clearInterval(this._smsTimer);
-        this._smsTimer = null;
-        this.setData({ countdown: 0 });
-      } else {
-        this.setData({ countdown: n });
-      }
-    }, 1000);
-  },
-  async onReg() {
-    const { roles, roleIndex, nickname, phone, smsCode } = this.data;
-    if (!nickname || !/^1\d{10}$/.test((phone || "").trim())) {
-      wx.showToast({ title: "请填写昵称与11位手机号", icon: "none" });
-      return;
-    }
-    if (!smsCode || String(smsCode).trim().length < 4) {
-      wx.showToast({ title: "请填写短信验证码", icon: "none" });
-      return;
-    }
-    wx.showLoading({ title: "注册中" });
-    try {
-      const res = await api.register({
-        nickname,
-        phone: phone.trim(),
-        smsCode: String(smsCode).trim(),
+      const { roles, roleIndex, nickname } = this.data;
+      const res = await api.wechatLogin({
+        code: loginRes.code,
         role: roles[roleIndex].value,
+        nickname: (nickname || "").trim(),
       });
       if (!res.ok) throw new Error(res.message || "失败");
       app.setSession(res.data.token, res.data.user);
-      wx.showToast({ title: "注册成功", icon: "success" });
-      wx.reLaunch({ url: "/pages/home/home" });
+      this.setData({ wxModalVisible: false });
+      ok = true;
     } catch (e) {
-      wx.showToast({ title: e.message || "注册失败", icon: "none" });
+      const msg = e.message || "注册失败";
+      if (isBackendUnavailable(msg)) {
+        this.setData({ wxModalVisible: false });
+        const apiBase = (app.globalData && app.globalData.apiBase) || "";
+        wx.showModal({
+          title: "后端请求超时",
+          content: apiBase.startsWith("https://")
+            ? "当前使用线上接口，请确认服务器可访问（含 443、防火墙、HTTPS 证书、域名解析）。若本地联调，请把 miniprogram/config/runtime.js 的 USE_PROD_API 改为 false。"
+            : "请先在项目根目录运行 npm run server，再重试微信快捷注册。",
+          showCancel: false,
+        });
+      } else {
+        wx.showToast({ title: msg, icon: "none" });
+      }
     } finally {
       wx.hideLoading();
     }
+    if (ok) {
+      wx.showToast({ title: "注册成功", icon: "success" });
+      wx.reLaunch({ url: afterAuthEntryPath(app.globalData.user || wx.getStorageSync("user")) });
+    }
+  },
+  goBack() {
+    wx.navigateBack({
+      fail: () =>
+        wx.redirectTo({ url: "/pages/entry/role-select/role-select" }),
+    });
+  },
+  goLogin() {
+    const { roles, roleIndex } = this.data;
+    const role = roles[roleIndex].value;
+    wx.redirectTo({ url: `/pages/login/login?role=${role}` });
   },
 });

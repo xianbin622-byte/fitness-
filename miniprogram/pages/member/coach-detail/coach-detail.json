@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "预约时间"
+  "navigationBarTitleText": "教练详情",
+  "navigationBarBackgroundColor": "#F5F7FA",
+  "navigationBarTextStyle": "black"
 }

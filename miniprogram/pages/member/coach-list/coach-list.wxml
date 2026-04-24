@@ -1,4 +1,8 @@
-<view class="page safe-bottom">
+<view class="page figma-page-bg safe-bottom">
+  <view class="figma-grad-hero compact">
+    <text class="figma-hero-h1">选择教练</text>
+    <text class="hero-sub">匹配最适合你的训练教练</text>
+  </view>
   <block wx:for="{{list}}" wx:key="id">
     <view class="coach-card">
       <view class="left">
@@ -18,4 +22,17 @@
     </view>
   </block>
   <view wx:if="{{!list.length}}" class="sub empty">暂无教练，请先注册教练账号或由后台添加</view>
+
+  <view class="tabbar-placeholder"></view>
+  <view class="member-tabbar three">
+    <view class="tab-item" data-t="home" bindtap="onTabSwitch">
+      <text class="tab-label">首页</text>
+    </view>
+    <view class="tab-item on" data-t="book" bindtap="onTabSwitch">
+      <text class="tab-label">预约</text>
+    </view>
+    <view class="tab-item" data-t="mine" bindtap="onTabSwitch">
+      <text class="tab-label">我的</text>
+    </view>
+  </view>
 </view>

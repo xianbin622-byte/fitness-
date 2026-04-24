@@ -1,0 +1,75 @@
+@import "../../../styles/figma-fitness.wxss";
+
+.figma-grad-hero.compact {
+  padding-bottom: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.hero-sub {
+  display: block;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 6rpx;
+  font-size: 24rpx;
+}
+
+.title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 12rpx;
+}
+
+.bar {
+  width: 100%;
+  height: 18rpx;
+  border-radius: 999rpx;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, #a8e6cf, #4caf50);
+}
+
+.tabbar-placeholder {
+  height: 150rpx;
+}
+
+.coach-tabbar {
+  position: fixed;
+  left: 24rpx;
+  right: 24rpx;
+  bottom: 24rpx;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1rpx solid #e5e7eb;
+  border-radius: 28rpx;
+  box-shadow: 0 10rpx 28rpx rgba(15, 23, 42, 0.12);
+  padding: 12rpx 10rpx calc(12rpx + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: space-between;
+  z-index: 50;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 14rpx 0;
+  border-radius: 20rpx;
+}
+
+.tab-item.on {
+  background: #ecfdf5;
+}
+
+.tab-label {
+  color: #6b7280;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.tab-item.on .tab-label {
+  color: #16a34a;
+  font-weight: 700;
+}

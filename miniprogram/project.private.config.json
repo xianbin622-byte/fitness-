@@ -9,47 +9,14 @@
     "preloadBackgroundData": false,
     "autoAudits": false,
     "showShadowRootInWxmlPanel": true,
-    "compileHotReLoad": true
+    "compileHotReLoad": true,
+    "useApiHook": true,
+    "useStaticServer": false,
+    "useLanDebug": false,
+    "showES6CompileOption": false,
+    "checkInvalidKey": true,
+    "ignoreDevUnusedFiles": true,
+    "bigPackageSizeSupport": false
   },
-  "condition": {
-    "miniprogram": {
-      "list": [
-        {
-          "name": "pages/dev/body-avatar-demo/body-avatar-demo",
-          "pathName": "pages/dev/body-avatar-demo/body-avatar-demo",
-          "query": "",
-          "scene": null,
-          "launchMode": "default"
-        },
-        {
-          "name": "pages/dev/body-visualizer-demo/body-visualizer-demo",
-          "pathName": "pages/dev/body-visualizer-demo/body-visualizer-demo",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "小黄鸭",
-          "pathName": "pages/dev/body-gltf-demo/body-gltf-demo",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "q版",
-          "pathName": "pages/dev/body-advanced-demo/body-advanced-demo",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "体型3d演示",
-          "pathName": "pages/dev/body-visualizer-demo/body-visualizer-demo",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        }
-      ]
-    }
-  }
+  "condition": {}
 }

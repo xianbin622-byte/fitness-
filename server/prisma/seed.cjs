@@ -15,9 +15,10 @@ async function main() {
 
   const coach = await prisma.user.upsert({
     where: { phone: "13800000001" },
-    update: {},
+    update: { email: "coach-demo@example.com" },
     create: {
       phone: "13800000001",
+      email: "coach-demo@example.com",
       nickname: "演示教练",
       role: "COACH",
       passwordHash: hash,
@@ -26,9 +27,10 @@ async function main() {
 
   const member = await prisma.user.upsert({
     where: { phone: "13800000002" },
-    update: {},
+    update: { email: "member-demo@example.com" },
     create: {
       phone: "13800000002",
+      email: "member-demo@example.com",
       nickname: "演示会员",
       role: "MEMBER",
       passwordHash: hash,
