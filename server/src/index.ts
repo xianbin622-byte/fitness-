@@ -62,7 +62,7 @@ function listenFrom(port: number) {
     process.env.PORT = String(port);
     if (port !== preferredPort) {
       console.warn(
-        `[端口] ${preferredPort} 已被占用，已改用 ${port}。请将 miniprogram/app.js 里 globalData.apiBase 改为 http://127.0.0.1:${port}`,
+        `[端口] ${preferredPort} 已被占用，已改用 ${port}。请将 miniprogram/config/runtime.js 里 DEVELOPMENT_API_BASE 改为 http://127.0.0.1:${port}`,
       );
     }
     console.log(`健身私教 API 已启动: http://localhost:${port}`);

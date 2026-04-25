@@ -5,9 +5,9 @@
 1. **安装 Node.js**（建议 20 LTS）与 **npm**。
 2. **安装微信开发者工具**，并登录微信开发者账号（真机预览需合法域名或调试设置）。
 3. **导入小程序项目**：选择本仓库根目录；若仅拷贝 `miniprogram` 子目录，需自行补全 `project.config.json` 或调整 `miniprogramRoot`。
-4. **配置后端地址**：在 `miniprogram/app.js` 修改 `globalData.apiBase`：
-   - 模拟器：`http://127.0.0.1:3000`
-   - 真机：改为电脑的 **局域网 IP**，且手机与电脑同一 WiFi。
+4. **配置后端地址**：编辑 **`miniprogram/config/runtime.js`**（`app.js` 会据此设置 `apiBase`）：
+   - 开发：`USE_PROD_API: false`；模拟器用 `http://127.0.0.1:3000`；真机连本机后端时把 `DEVELOPMENT_API_BASE` 改为电脑的 **局域网 IP** 与端口。
+   - 上线前：`USE_PROD_API: true`，`PRODUCTION_API_BASE` 为 **HTTPS 生产 API 根**。
 5. **（必做）解决「域名不在列表」报错**：若出现 `request:fail url not in domain list`，在微信开发者工具中：
    - 点击顶部 **「详情」**
    - 打开 **「本地设置」**
@@ -53,11 +53,13 @@
 
 ---
 
-## 教练课后笔记：微信同声传译插件（听写）
+## 教练课后笔记：听写方式（不存录音、不上传服务端转写）
 
-业务上 **不上传录音、不做服务端语音转写**，仅在小程序内用官方插件把语音转成文字。
+业务上 **不上传录音、不做服务端语音转写**。
 
-1. 登录 [微信公众平台](https://mp.weixin.qq.com/) → 你的小程序 → **设置** → **第三方设置** → **插件管理** → 添加 **微信同声传译**（插件 AppID 一般为 **`wx069ba97219f66d99`**；**个人主体**可能无法添加部分插件，以后台提示为准）。
-2. 代码侧：`miniprogram/app.json` 已配置 `plugins.WechatSI`；页面内 `requirePlugin('WechatSI')` 与 `getRecordRecognitionManager()` 见 **`pages/coach/member-note/member-note.js`**。
-3. 上架与隐私、麦克风说明：**`docs/wechat_publish_steps.md`**；仅负责人能点的后台步骤：**`docs/OWNER_ONLY_STEPS.md`**。
-4. 添加或升级插件版本后，在微信开发者工具 **重新编译**；若插件市场有更新，请把 `app.json` 里 `WechatSI` 的 `version` 改为与后台一致的版本号。
+- **个人主体（常见）**：后台往往 **无法添加**「微信同声传译」插件。请在本页用 **系统键盘的语音输入** 或 **手写** 录入笔记；页面按钮会提示「听写不可用」时，点按可看说明（见 `member-note` 页实现）。
+- **可添加插件的账号**（以公众平台为准）：在 **插件市场** 搜索并添加 **微信同声传译**（插件方 AppID 一般为 **`wx069ba97219f66d99`**；后台菜单位置以当前版本为准，可在后台顶部 **搜索**「插件管理」）。  
+  代码侧：`miniprogram/app.json` 已配置 `plugins.WechatSI`；`pages/coach/member-note/member-note.js` 内为 `requirePlugin` + `getRecordRecognitionManager()`。  
+  添加或升级插件后请在开发者工具 **重新编译**；`app.json` 里 `WechatSI` 的 `version` 须与后台选用版本 **一致**。
+
+上架与隐私、麦克风声明：**`docs/wechat_publish_steps.md`**、**`docs/OWNER_ONLY_STEPS.md`**。

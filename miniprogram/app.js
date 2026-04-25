@@ -15,12 +15,6 @@ App({
     user: null,
   },
   onLaunch() {
-    // 小程序无浏览器 window；部分 Three/GLTF 代码读 window.URL，与 globalThis.URL 对齐（基础库 2.19+ 提供 URL）
-    if (typeof globalThis !== "undefined" && typeof globalThis.window === "undefined") {
-      try {
-        globalThis.window = globalThis;
-      } catch (e) {}
-    }
     try {
       const token = wx.getStorageSync("token");
       const user = wx.getStorageSync("user");

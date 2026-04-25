@@ -10,13 +10,13 @@
     <view class="rec-row">
       <button
         class="rec-btn {{recording ? 'on' : ''}}"
-        disabled="{{saving || !siReady}}"
+        disabled="{{saving}}"
         bindtouchstart="onRecStart"
         bindtouchend="onRecEnd"
         bindtouchcancel="onRecCancel"
         hover-class="none"
       >
-        {{ recording ? "松开结束" : "按住说话" }}
+        {{ recording ? "松开结束" : (siReady ? "按住说话" : "听写不可用（点我看说明）") }}
       </button>
     </view>
     <text class="field-label">笔记（将写入上一节课后反馈）</text>

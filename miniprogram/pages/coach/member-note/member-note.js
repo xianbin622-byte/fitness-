@@ -35,13 +35,14 @@ Page({
       this._siManager = mgr;
       this.setData({
         siReady: true,
-        asrHint: "听写由微信同声传译插件完成；请已在公众平台添加该插件。识别结果仅写入本条笔记。",
+        asrHint: "听写由微信同声传译插件完成；识别结果仅写入本条笔记。",
       });
     } catch (e) {
       this._siManager = null;
       this.setData({
         siReady: false,
-        asrHint: "未加载同声传译插件：微信公众平台 → 设置 → 第三方设置 → 插件管理 → 添加「微信同声传译」。",
+        asrHint:
+          "未加载同声传译插件。个人主体小程序通常无法添加该插件，建议直接使用系统键盘语音输入或手动输入。",
       });
     }
   },
@@ -108,7 +109,8 @@ Page({
     if (!this._siManager) {
       wx.showModal({
         title: "听写不可用",
-        content: "请先在微信公众平台 → 插件管理 中添加「微信同声传译」（个人主体小程序可能无法添加）。",
+        content:
+          "当前未接入同声传译插件。若你是个人主体小程序，请直接使用系统键盘语音输入或手动输入后保存。",
         showCancel: false,
       });
       return;

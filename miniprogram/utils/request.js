@@ -2,7 +2,7 @@ const app = getApp();
 
 /**
  * 封装 wx.request，自动带 JWT
- * 请将 app.globalData.apiBase 改为本机局域网 IP 以便真机调试
+ * apiBase 来自 app.js（读 config/runtime.js）；真机连本机后端请改 runtime 里 DEVELOPMENT_API_BASE 为电脑局域网 IP
  */
 function request(options) {
   const { url, method = "GET", data = {}, header = {} } = options;

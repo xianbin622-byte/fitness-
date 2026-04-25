@@ -61,9 +61,9 @@ npm run dev
 1. 打开微信开发者工具 → 导入项目。
 2. 目录选择本仓库根目录 `fitness-coach-app`（需包含 `project.config.json` 与 `miniprogram/`）。
 3. AppID 可使用测试号或 `touristappid`（仅开发调试）。
-4. **重要**：在 `miniprogram/app.js` 中将 `globalData.apiBase` 改为你的后端地址：
-   - 模拟器访问本机：`http://127.0.0.1:3000`
-   - **真机调试**：改为电脑局域网 IP，如 `http://192.168.1.5:3000`。
+4. **重要**：在 **`miniprogram/config/runtime.js`** 中配置接口根地址（`app.js` 会据此设置 `globalData.apiBase`）：
+   - 开发：保持 `USE_PROD_API: false`，`DEVELOPMENT_API_BASE` 为模拟器本机 `http://127.0.0.1:3000`；**真机连电脑后端** 时改为电脑 **局域网 IP**，如 `http://192.168.1.5:3000`。
+   - 上线前：将 `USE_PROD_API: true`，`PRODUCTION_API_BASE` 填 **HTTPS 生产 API 根**（与公众平台「服务器域名」一致）。
 
 ### 新手必做：否则会出现 `request:fail url not in domain list`
 
@@ -79,7 +79,7 @@ npm run dev
 
 **关于成本（常见误解）**：Let's Encrypt 等**免费证书只替代「付费 SSL 证书」**，不能替代**云服务器/托管费用**和**域名注册费**；API 仍要部署在可公网访问的 HTTPS 地址上。**微信认证/上架规则与费用**（个人主体与企业不同）以 [微信公众平台](https://mp.weixin.qq.com/) 当前公示为准，请在后台查看「认证」等说明，勿依赖非官方文章的过时金额。
 
-**教练课后笔记语音听写**：使用官方插件 **微信同声传译**（`app.json` 已声明）；公众平台添加插件、隐私与麦克风权限等见 **`docs/wechat_publish_steps.md`** 与 **`docs/manual_steps.md`**。
+**教练课后笔记**：优先尝试官方插件 **微信同声传译**（`app.json` 已声明；需公众平台添加插件）。**个人主体**常无法添加插件，页面会提示改用 **系统键盘语音输入** 或手动输入。详见 **`docs/wechat_publish_steps.md`** 与 **`docs/manual_steps.md`**。
 
 ## 新手 5 分钟试用（推荐先用密码登录）
 
@@ -96,7 +96,7 @@ npm start
 
 看到终端输出「健身私教 API 已启动」即成功（默认端口 **3000**）。
 
-**第 2 步**：按上一节 **勾选「不校验合法域名」**，并确认 `miniprogram/app.js` 里 `apiBase` 为 `http://127.0.0.1:3000`（模拟器）。
+**第 2 步**：按上一节 **勾选「不校验合法域名」**，并确认 `miniprogram/config/runtime.js` 在 `USE_PROD_API: false` 时 `DEVELOPMENT_API_BASE` 为 `http://127.0.0.1:3000`（模拟器默认）。
 
 **第 3 步**：在小程序 **登录页** 使用下表账号（**验证码可先不填**，只在第二行填 **密码** 即可登录）：
 

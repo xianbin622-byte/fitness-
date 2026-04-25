@@ -58,8 +58,8 @@ git push -u origin main
    - 在 **服务器域名** 里填写 **request 合法域名**：`https://你的API域名`（无路径，须 HTTPS）。
    - 若以后使用需 **uploadFile** / **downloadFile** 的能力，再补充对应合法域名。
 3. **设置** → 基本设置 / **服务类目**：选择与你业务相符的类目。
-4. **设置** → **第三方设置** → **插件管理**：添加 **微信同声传译**（教练课后笔记听写依赖；个人主体可能无法添加）。
-5. 按微信要求填写 **用户隐私保护指引**（涉及手机、身体数据、麦克风等）。
+4. **插件**（仅当你能添加时）：在后台搜索 **插件管理** → 视情况添加 **微信同声传译**（`wx069ba97219f66d99`）。**个人主体常无法添加**；此时代码已支持 **系统键盘听写 + 手动输入**，不必强行配置。
+5. 按微信要求填写 **用户隐私保护指引**（涉及手机、身体数据、麦克风等；个人主体以实际采集为准填写）。
 
 ---
 
@@ -87,6 +87,6 @@ git push -u origin main
 
 - Git 仓库与提交历史、`.gitignore`、`docs/git_guide.md`
 - `docs/wechat_publish_steps.md`、`docs/DEPLOY_CHECKLIST.md`
-- `miniprogram/app.js` 中已注明上线前改 `apiBase`
+- `miniprogram/config/runtime.js` 中切换生产/开发 API（`USE_PROD_API`、`PRODUCTION_API_BASE`）
 
 有新版本时：本地 `git add -A` → `git commit` → `git push`，再按 **D** 上传小程序。

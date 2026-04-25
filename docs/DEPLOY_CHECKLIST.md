@@ -9,13 +9,13 @@
 ## 后端部署
 
 - 生产数据库：按需使用 PostgreSQL 等，并修改 `DATABASE_URL`、运行 `prisma migrate` / `db push`。
-- **HTTPS 域名**：小程序 `request` 合法域名须为 **HTTPS**，且与 `miniprogram/app.js` 里 **`apiBase`** 一致（无路径时填到主机，如 `https://api.example.com`）。
-- 静态资源 / 上传：配置 **`PUBLIC_BASE_URL`**、OSS/CDN 若需要。
+- **HTTPS 域名**：小程序 `request` 合法域名须为 **HTTPS**，且与 **`miniprogram/config/runtime.js`** 里 `PRODUCTION_API_BASE`（`USE_PROD_API: true` 时）一致（无路径，如 `https://api.example.com`）。
+- 若需对外可访问的公开链接：配置 **`PUBLIC_BASE_URL`**（见 `server/.env.example`）。
 
 ## 微信小程序
 
 1. **微信公众平台** → 开发 → 开发管理 → **服务器域名**：配置 request、uploadFile、downloadFile 等合法域名。
-2. **`miniprogram/app.js`**：将 `globalData.apiBase` 改为 **生产 API 根地址**（HTTPS）。
+2. **`miniprogram/config/runtime.js`**：设 `USE_PROD_API: true`，`PRODUCTION_API_BASE` 为 **生产 API 根**（HTTPS，无尾斜杠）。
 3. 关闭开发用「不校验合法域名」仅用于本机调试；**正式版用户设备会校验域名**。
 4. 上传代码 → 提交审核 → 发布。
 
