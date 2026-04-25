@@ -56,9 +56,10 @@ git push -u origin main
 2. **开发** → **开发管理** → **开发设置**：
    - 记录你的 **AppID**。
    - 在 **服务器域名** 里填写 **request 合法域名**：`https://你的API域名`（无路径，须 HTTPS）。
-   - 若有上传录音等：填写 **uploadFile**、**downloadFile** 合法域名。
+   - 若以后使用需 **uploadFile** / **downloadFile** 的能力，再补充对应合法域名。
 3. **设置** → 基本设置 / **服务类目**：选择与你业务相符的类目。
-4. 按微信要求填写 **用户隐私保护指引**（涉及手机、身体数据等）。
+4. **设置** → **第三方设置** → **插件管理**：添加 **微信同声传译**（教练课后笔记听写依赖；个人主体可能无法添加）。
+5. 按微信要求填写 **用户隐私保护指引**（涉及手机、身体数据、麦克风等）。
 
 ---
 
@@ -66,7 +67,7 @@ git push -u origin main
 
 1. 用微信开发者工具打开本项目根目录。
 2. 在 **`project.config.json`**（根目录）里确认 **`appid`** 为你的 **正式小程序 AppID**（不要用长期游客号上线）。
-3. 编辑 **`miniprogram/app.js`**：把 **`globalData.apiBase`** 改为 **第 B 步可用的 HTTPS API 根**，例如：  
+3. 编辑 **`miniprogram/config/runtime.js`**：`USE_PROD_API: true`，`PRODUCTION_API_BASE` 为 **第 B 步可用的 HTTPS API 根**，例如：  
    `https://api.你的域名.com`
 4. 开发者工具里 **编译**，用 **真机预览** 测登录、接口是否正常（须已配置合法域名，或临时勾选「不校验」仅调试用）。
 5. 菜单 **上传**，填写版本号与说明。

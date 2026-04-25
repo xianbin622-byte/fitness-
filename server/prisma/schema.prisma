@@ -196,13 +196,3 @@ model ExerciseItem {
   @@index([courseRecordId])
   @@map("exercise_items")
 }
-
-model UploadFile {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
-  path      String
-  mimeType  String?  @map("mime_type")
-  createdAt DateTime @default(now()) @map("created_at")
-
-  @@map("upload_files")
-}

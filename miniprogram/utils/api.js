@@ -1,7 +1,5 @@
 const { request } = require("./request.js");
 
-const app = getApp();
-
 /** 登录：{ email, smsCode } 或 { phone, smsCode }；密码：{ phone, password } 或 { email, password } */
 async function login(data) {
   return request({ url: "/api/auth/login", method: "POST", data });
@@ -182,29 +180,6 @@ async function aiPlan(data) {
   return request({ url: "/api/ai/plan", method: "POST", data: data || {} });
 }
 
-function uploadVoice(filePath) {
-  const base = app.globalData.apiBase || "";
-  const token = app.globalData.token || wx.getStorageSync("token");
-  return new Promise((resolve, reject) => {
-    wx.uploadFile({
-      url: base + "/api/upload/voice",
-      filePath,
-      name: "file",
-      header: token ? { Authorization: "Bearer " + token } : {},
-      success(res) {
-        try {
-          const data = JSON.parse(res.data);
-          if (data.ok) resolve(data);
-          else reject(new Error(data.message || "上传失败"));
-        } catch (e) {
-          reject(e);
-        }
-      },
-      fail: reject,
-    });
-  });
-}
-
 module.exports = {
   login,
   sendEmailCode,
@@ -246,5 +221,4 @@ module.exports = {
   courseConfirm,
   generateTrainPlan,
   aiPlan,
-  uploadVoice,
 };

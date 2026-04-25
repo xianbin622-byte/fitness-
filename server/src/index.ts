@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 const portFromEnv = process.env.PORT;
 dotenv.config({ override: true });
 if (portFromEnv) process.env.PORT = portFromEnv;
-import path from "path";
 import express from "express";
 import cors from "cors";
 import { authRouter } from "./routes/auth";
@@ -12,7 +11,6 @@ import { schedulesRouter } from "./routes/schedules";
 import { appointmentsRouter } from "./routes/appointments";
 import { bodyRouter } from "./routes/body";
 import { coursesRouter } from "./routes/courses";
-import { uploadRouter } from "./routes/upload";
 import { aiRouter } from "./routes/ai";
 import { memberProfileSave, memberRouter } from "./routes/member";
 import { dataExportRouter } from "./routes/dataExport";
@@ -25,9 +23,6 @@ const PORT_FALLBACK_MAX = 8;
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: "10mb" }));
-
-const uploadDir = path.resolve(process.env.UPLOAD_DIR || "./uploads");
-app.use("/uploads", express.static(uploadDir));
 
 app.get("/", (_req, res) => {
   const port = Number(process.env.PORT) || preferredPort;
@@ -53,7 +48,6 @@ app.use("/api/schedules", schedulesRouter);
 app.use("/api/appointments", appointmentsRouter);
 app.use("/api/body", bodyRouter);
 app.use("/api/courses", coursesRouter);
-app.use("/api/upload", uploadRouter);
 app.use("/api/ai", aiRouter);
 app.use("/api/member", memberRouter);
 app.use("/api/data-export", dataExportRouter);

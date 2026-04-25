@@ -19,7 +19,7 @@
 
 1. **服务器**：域名备案、HTTPS 证书、将 Node 服务部署在公网（或内网+运维转发），开放 `PORT`。
 2. **微信公众平台**（小程序）：
-   - 开发 / 管理 → 开发管理 → 开发设置 → **服务器域名**（`request`、如用到则 `uploadFile`/`downloadFile`）填你的 API 域名；**不填 IP**，须备案域名。
+   - 开发 / 管理 → 开发管理 → 开发设置 → **服务器域名**：至少配置 **`request`** 合法域名为你的 API 根域名；若后续使用上传/下载能力再补 `uploadFile`/`downloadFile`。**不填 IP**，须备案域名。
    - 配置 **WECHAT_APPID / WECHAT_APP_SECRET**（`server/.env`），与线上一致。
 3. **正式发包前**：把 `miniprogram/config/runtime.js` 的 `USE_PROD_API` 改为 `true` 并填好 `PRODUCTION_API_BASE`，再上传代码 / 提审。
 
