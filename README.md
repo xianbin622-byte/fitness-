@@ -6,12 +6,12 @@
 
 | 层级 | 选型 | 说明 |
 |------|------|------|
-| 小程序 | 微信原生（JavaScript） | 可直接用微信开发者工具打开；GLB 演示需在 `miniprogram` 下安装依赖并「构建 npm」 |
-| 后端 | Node.js 20+、Express、TypeScript | REST API、JWT、Multer 上传 |
+| 小程序 | 微信原生（JavaScript） | 可直接用微信开发者工具打开根目录项目 |
+| 后端 | Node.js 20+、Express、TypeScript | REST API、JWT |
 | 数据库 | SQLite（默认） | 零依赖本地文件 `server/dev.db`；生产可换 PostgreSQL，见下文 |
 | ORM | Prisma 5 | `schema.prisma` 即数据模型 |
 | 图表 | Canvas 2D | 身体数据折线图（MVP） |
-| 体型 | 自定义组件 `body-silhouette` | 伪 3D 轮廓，可替换为 Three.js 等 |
+| 体型 | 自定义组件 `body-silhouette` | 轮廓示意 |
 
 ## 目录结构
 
@@ -21,17 +21,13 @@ fitness-coach-app/
 ├── project.config.json         # 微信项目配置（miniprogramRoot: miniprogram/）
 ├── miniprogram/                # 小程序源码
 │   ├── app.js / app.json / app.wxss
-│   ├── components/body-silhouette/   # 体型可视化（可升级）
-│   ├── components/body-gltf/         # Three.js + 包内 GLB（演示）
-│   ├── libs/gltf-loader.js           # GLTFLoader（官方示例适配）
-│   ├── assets/models/                # 示例 duck.glb（可替换）
+│   ├── components/body-silhouette/   # 体型可视化
 │   ├── pages/                  # 登录、会员端、教练端全部页面
 │   └── utils/request.js、api.js      # 请求封装与接口
 ├── server/
 │   ├── prisma/schema.prisma    # 数据模型
 │   ├── prisma/seed.cjs         # 种子数据
-│   ├── src/                    # Express 路由与服务
-│   └── uploads/                # 语音等上传（运行时生成）
+│   └── src/                    # Express 路由与服务
 └── docs/                       # 需求、待办、人工步骤
 ```
 
@@ -83,14 +79,7 @@ npm run dev
 
 **关于成本（常见误解）**：Let's Encrypt 等**免费证书只替代「付费 SSL 证书」**，不能替代**云服务器/托管费用**和**域名注册费**；API 仍要部署在可公网访问的 HTTPS 地址上。**微信认证/上架规则与费用**（个人主体与企业不同）以 [微信公众平台](https://mp.weixin.qq.com/) 当前公示为准，请在后台查看「认证」等说明，勿依赖非官方文章的过时金额。
 
-### 可选：GLB / Three.js 演示页（`body-gltf`）
-
-1. 终端：`cd miniprogram && npm install`（会 **自动生成** `miniprogram_npm/threejs-miniprogram/`，无需再点「构建 npm」即可跑 Duck 演示）。
-2. 微信开发者工具：**普通编译 ▼ → 添加编译模式**，启动页填 **`pages/dev/body-gltf-demo/body-gltf-demo`** 后编译。
-
-**小白逐步说明（含编译模式、白框说明）**：见 **`docs/manual_steps.md`**。
-
-`body-gltf` 使用显式路径引用 `miniprogram_npm`，避免 `require('threejs-miniprogram')` 在组件内被误解析；业务页面不依赖该组件。
+**教练课后笔记语音听写**：使用官方插件 **微信同声传译**（`app.json` 已声明）；公众平台添加插件、隐私与麦克风权限等见 **`docs/wechat_publish_steps.md`** 与 **`docs/manual_steps.md`**。
 
 ## 新手 5 分钟试用（推荐先用密码登录）
 

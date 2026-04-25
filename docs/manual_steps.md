@@ -53,48 +53,11 @@
 
 ---
 
-## 可选：打开 GLB 三维演示页（Three.js + 小黄鸭模型）
+## 教练课后笔记：微信同声传译插件（听写）
 
-### 第 0 步：在终端生成 `miniprogram_npm`（必做一次）
+业务上 **不上传录音、不做服务端语音转写**，仅在小程序内用官方插件把语音转成文字。
 
-本仓库在 **`miniprogram/package.json`** 里配置了 **`postinstall`**：你在 **`miniprogram`** 目录执行 **`npm install`** 后，会自动把 `threejs-miniprogram` 拷到 **`miniprogram/miniprogram_npm/threejs-miniprogram/`**，**不必**再在微信开发者工具里点「构建 npm」也能跑 GLB 演示。
-
-若左侧文件树里 **没有** `miniprogram_npm` 文件夹，请在终端执行：
-
-```bash
-cd miniprogram
-npm install
-```
-
-若仍没有，可手动执行：`node scripts/copy-threejs-npm.js`（在 `miniprogram` 目录下）。
-
-**说明**：以前若在组件里写 `require('threejs-miniprogram')`，微信会把路径错当成 `components/body-gltf/...`，已改为显式引用 `miniprogram_npm` + 上述脚本，避免该错误。
-
-### 第 1 步：用「编译模式」打开 GLB 演示页（只能在你本机开发者工具里点）
-
-1. 看开发者工具 **顶部中间**，一般有 **「普通编译」** 按钮（或显示当前启动路径）。
-2. 点 **「普通编译」右侧的小三角 ▼**（或「添加编译模式」）。
-3. 选择 **「添加编译模式」**。
-4. 在 **「启动页面」** 里填入（可复制粘贴）：`pages/dev/body-gltf-demo/body-gltf-demo`
-5. 名称可填：`GLB 演示`，保存。
-6. 在编译方式里 **选中刚加的这一条**，再点 **「编译」**。
-
-### 第 2 步：若仍报错
-
-- 打开 **「控制台」**，看红色报错。
-- 确认 **`miniprogram/miniprogram_npm/threejs-miniprogram/index.js`** 文件存在。
-
-### （可选）工具 → 构建 npm
-
-只有当你 **还引入了其它 npm 包**、需要按微信官方流程统一构建时，再在 **详情 → 本地设置** 勾选 **「使用 npm 模块」**，菜单 **工具 → 构建 npm**。本项目的 Duck 演示 **不依赖** 这一步。
-
-**说明**：其它业务页面 **不依赖** GLB 步骤。
-
----
-
-## 你截图里「3D 体型 Advanced」上面是白框？
-
-那一页是 **`body-advanced-demo`**（几何体小人），**不是** GLB 小黄鸭页；**不需要** 构建 npm。
-
-- 若白框一直无画面：在 **「详情」→「本地设置」** 里把 **基础库版本** 调到较新（如 **2.20+**），再点 **「编译」**；仍不行则看 **控制台** 是否有 WebGL 相关报错。
-- 若要看 **小黄鸭 GLB**：请按上文 **「编译模式」** 打开 **`pages/dev/body-gltf-demo/body-gltf-demo`**。
+1. 登录 [微信公众平台](https://mp.weixin.qq.com/) → 你的小程序 → **设置** → **第三方设置** → **插件管理** → 添加 **微信同声传译**（插件 AppID 一般为 **`wx069ba97219f66d99`**；**个人主体**可能无法添加部分插件，以后台提示为准）。
+2. 代码侧：`miniprogram/app.json` 已配置 `plugins.WechatSI`；页面内 `requirePlugin('WechatSI')` 与 `getRecordRecognitionManager()` 见 **`pages/coach/member-note/member-note.js`**。
+3. 上架与隐私、麦克风说明：**`docs/wechat_publish_steps.md`**；仅负责人能点的后台步骤：**`docs/OWNER_ONLY_STEPS.md`**。
+4. 添加或升级插件版本后，在微信开发者工具 **重新编译**；若插件市场有更新，请把 `app.json` 里 `WechatSI` 的 `version` 改为与后台一致的版本号。
