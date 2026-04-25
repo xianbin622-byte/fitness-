@@ -7,14 +7,13 @@ async function login(data) {
 
 /**
  * 发邮箱验证码：
- * - 已注册：传 { email } 或 { phone }
- * - 未注册：传 { phone, email }
+ * - 纯邮箱：传 { email }
  */
 async function sendEmailCode(data) {
   return request({ url: "/api/auth/email/send", method: "POST", data: data || {} });
 }
 
-/** 注册：{ phone, email, smsCode, nickname, role } */
+/** 注册：{ email, smsCode, nickname, role } */
 async function register(body) {
   return request({ url: "/api/auth/register", method: "POST", data: body });
 }

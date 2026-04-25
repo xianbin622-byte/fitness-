@@ -10,7 +10,6 @@ import {
   verifySmsCodeOnly,
   consumeSmsCode,
   revokeSmsCode,
-  isValidPhone,
 } from "../services/smsCode";
 import { sendVerificationEmail } from "../services/sendMail";
 import { isValidEmail } from "../services/emailValidation";
@@ -82,86 +81,24 @@ function userResponse(
   };
 }
 
-/**
- * 发送邮箱验证码（内存中按手机号存码）
- * - 已注册：可仅填「注册邮箱」或仅填「手机号」，邮件发到账号绑定邮箱
- * - 未注册：须填「手机号 + 邮箱」，与注册提交一致
- */
+/** 发送邮箱验证码（内存按邮箱存码） */
 r.post("/email/send", async (req, res) => {
-  const { phone, email } = req.body as { phone?: string; email?: string };
-  const phoneTrim = (phone || "").trim();
+  const { email } = req.body as { email?: string };
   const emailTrim = (email || "").trim();
-
-  let existing = null as {
-    phone: string | null;
-    email: string | null;
-  } | null;
-
-  if (phoneTrim && isValidPhone(phoneTrim)) {
-    existing = await prisma.user.findUnique({
-      where: { phone: phoneTrim },
-      select: { phone: true, email: true },
-    });
+  if (!emailTrim || !isValidEmail(emailTrim)) {
+    return res.status(400).json({ ok: false, message: "请填写有效邮箱" });
   }
+  const emailNorm = emailTrim.toLowerCase();
 
-  if (!existing && emailTrim && isValidEmail(emailTrim)) {
-    existing = await prisma.user.findFirst({
-      where: { email: emailTrim },
-      select: { phone: true, email: true },
-    });
-  }
-
-  let phoneNorm: string;
-  let targetEmail: string;
-
-  if (existing) {
-    if (!existing.email?.trim()) {
-      return res.status(400).json({
-        ok: false,
-        message: "该账号未绑定邮箱，请使用密码登录或联系管理员绑定邮箱",
-      });
-    }
-    const p = existing.phone?.trim();
-    if (!p) {
-      return res.status(400).json({
-        ok: false,
-        message: "该账号为微信注册且无手机号，请使用微信快捷登录",
-      });
-    }
-    phoneNorm = p;
-    targetEmail = existing.email.trim();
-  } else {
-    if (!phoneTrim || !isValidPhone(phoneTrim)) {
-      return res.status(400).json({
-        ok: false,
-        message: "未注册请填写11位手机号与邮箱后再获取验证码",
-      });
-    }
-    if (!emailTrim || !isValidEmail(emailTrim)) {
-      return res.status(400).json({ ok: false, message: "请填写有效邮箱" });
-    }
-    const emailNorm = emailTrim;
-    const emailTaken = await prisma.user.findFirst({
-      where: { email: emailNorm },
-    });
-    if (emailTaken) {
-      return res.status(409).json({ ok: false, message: "该邮箱已被其他账号使用" });
-    }
-    phoneNorm = phoneTrim;
-    targetEmail = emailNorm;
-  }
-
-  const issued = existing
-    ? issueSmsCode(phoneNorm)
-    : issueSmsCode(phoneNorm, { boundEmail: targetEmail });
+  const issued = issueSmsCode(emailNorm, { boundEmail: emailNorm });
   if (!issued.ok) {
     return res.status(400).json({ ok: false, message: issued.message });
   }
 
   try {
-    await sendVerificationEmail(targetEmail, issued.code);
+    await sendVerificationEmail(emailNorm, issued.code);
   } catch (e) {
-    revokeSmsCode(phoneNorm);
+    revokeSmsCode(emailNorm);
     const msg = e instanceof Error ? e.message : "发信失败";
     console.error("[邮箱] 发送失败:", e);
     return res.status(502).json({ ok: false, message: `邮件发送失败：${msg}` });
@@ -182,19 +119,18 @@ r.post("/sms/send", (_req, res) => {
   });
 });
 
-/** 注册：邮箱验证码 + 昵称 + 角色 + 邮箱（与发码时一致） */
+/** 注册：邮箱验证码 + 昵称 + 角色（纯邮箱） */
 r.post("/register", async (req, res) => {
-  const { phone, email, smsCode, nickname, role } = req.body as {
-    phone?: string;
+  const { email, smsCode, nickname, role } = req.body as {
     email?: string;
     smsCode?: string;
     nickname?: string;
     role?: "MEMBER" | "COACH";
   };
-  if (!phone || !email || !smsCode || !nickname || !role) {
+  if (!email || !smsCode || !nickname || !role) {
     return res.status(400).json({
       ok: false,
-      message: "请填写手机号、邮箱、验证码、昵称并选择角色",
+      message: "请填写邮箱、验证码、昵称并选择角色",
     });
   }
   if (!["MEMBER", "COACH"].includes(role)) {
@@ -203,24 +139,18 @@ r.post("/register", async (req, res) => {
   if (!isValidEmail(email)) {
     return res.status(400).json({ ok: false, message: "邮箱格式不正确" });
   }
-  const emailNorm = email.trim();
-  if (!verifySmsCodeOnly(phone, smsCode, emailNorm)) {
+  const emailNorm = email.trim().toLowerCase();
+  if (!verifySmsCodeOnly(emailNorm, smsCode, emailNorm)) {
     return res.status(400).json({ ok: false, message: "验证码错误或已过期，请重新获取" });
   }
-  const exists = await prisma.user.findUnique({ where: { phone: phone.trim() } });
+  const exists = await prisma.user.findFirst({ where: { email: emailNorm } });
   if (exists) {
-    return res.status(409).json({ ok: false, message: "该手机号已注册，请直接登录" });
-  }
-  const emailTaken = await prisma.user.findFirst({
-    where: { email: emailNorm },
-  });
-  if (emailTaken) {
     return res.status(409).json({ ok: false, message: "该邮箱已被注册" });
   }
   const passwordHash = await bcrypt.hash(crypto.randomBytes(32).toString("hex"), 10);
   const user = await prisma.user.create({
     data: {
-      phone: phone.trim(),
+      phone: null,
       email: emailNorm,
       nickname,
       role,
@@ -228,14 +158,14 @@ r.post("/register", async (req, res) => {
     },
     select: userPublicSelect,
   });
-  consumeSmsCode(phone);
+  consumeSmsCode(emailNorm);
   const token = tokenPayload(user);
   return res.json({ ok: true, data: { user: userResponse(user), token } });
 });
 
 /**
  * 登录：
- * - 推荐：注册邮箱或手机号 + 邮箱验证码（smsCode）
+ * - 推荐：注册邮箱 + 邮箱验证码（smsCode）
  * - 兼容种子账号：手机号或邮箱 + 密码（password）
  */
 r.post("/login", async (req, res) => {
@@ -248,42 +178,23 @@ r.post("/login", async (req, res) => {
   const phoneTrim = (phone || "").trim();
   const emailTrim = (email || "").trim();
 
-  let phoneNorm: string | undefined;
-  if (phoneTrim && isValidPhone(phoneTrim)) {
-    phoneNorm = phoneTrim;
-  } else if (emailTrim && isValidEmail(emailTrim)) {
-    const u = await prisma.user.findFirst({
-      where: { email: emailTrim },
-      select: { phone: true },
-    });
-    if (!u) {
-      return res.status(404).json({ ok: false, message: "该邮箱尚未注册" });
-    }
-    if (!u.phone?.trim()) {
-      return res.status(400).json({
-        ok: false,
-        message: "该账号请使用微信快捷登录",
-      });
-    }
-    phoneNorm = u.phone.trim();
-  }
-
-  if (!phoneNorm) {
-    return res.status(400).json({ ok: false, message: "请输入注册手机号或邮箱" });
-  }
+  const emailNorm = emailTrim.toLowerCase();
 
   if (smsCode) {
-    if (!verifySmsCodeOnly(phoneNorm, smsCode)) {
+    if (!emailNorm || !isValidEmail(emailNorm)) {
+      return res.status(400).json({ ok: false, message: "请输入注册邮箱" });
+    }
+    if (!verifySmsCodeOnly(emailNorm, smsCode)) {
       return res.status(400).json({ ok: false, message: "验证码错误或已过期，请重新获取" });
     }
-    const user = await prisma.user.findUnique({
-      where: { phone: phoneNorm },
+    const user = await prisma.user.findFirst({
+      where: { email: emailNorm },
       select: userPublicSelect,
     });
     if (!user) {
-      return res.status(404).json({ ok: false, message: "该手机号尚未注册，请先注册" });
+      return res.status(404).json({ ok: false, message: "该邮箱尚未注册" });
     }
-    consumeSmsCode(phoneNorm);
+    consumeSmsCode(emailNorm);
     const token = tokenPayload(user);
     return res.json({
       ok: true,
@@ -292,12 +203,17 @@ r.post("/login", async (req, res) => {
   }
 
   if (password) {
-    const user = await prisma.user.findUnique({ where: { phone: phoneNorm } });
+    const id = phoneTrim || emailTrim;
+    if (!id) {
+      return res.status(400).json({ ok: false, message: "请输入手机号或邮箱" });
+    }
+    const where = isValidEmail(emailTrim) ? { email: emailNorm } : { phone: phoneTrim };
+    const user = await prisma.user.findFirst({ where });
     if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
       return res.status(401).json({ ok: false, message: "账号或密码错误" });
     }
     const full = await prisma.user.findUnique({
-      where: { phone: phoneNorm },
+      where: { id: user.id },
       select: userPublicSelect,
     });
     if (!full) {

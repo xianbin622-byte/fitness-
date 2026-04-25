@@ -11,7 +11,7 @@
     <view class="main">
       <view class="logo-box">✦</view>
       <text class="headline">AI Fitness Coach OS</text>
-      <text class="subhead">欢迎回来，使用邮箱验证码或微信快速登录</text>
+      <text class="subhead">欢迎回来，使用邮箱验证码或演示账号密码登录</text>
 
       <view class="form-card">
         <view class="field">
@@ -45,7 +45,6 @@
         </view>
 
         <button class="btn-main" bindtap="onLogin">立即登录</button>
-        <button class="btn-wx" bindtap="openWxModal">微信快捷登录</button>
 
         <view class="pwd-toggle" bindtap="togglePwdDemo">
           <text>{{showPwdDemo ? '收起密码登录（演示）' : '演示账号 · 密码登录'}}</text>
@@ -76,13 +75,4 @@
     </view>
   </scroll-view>
 
-  <view class="wx-mask" wx:if="{{wxModalVisible}}" catchtouchmove="noop">
-    <view class="wx-sheet" catchtap="noop">
-      <text class="wx-sheet-title">微信快捷登录</text>
-      <text class="wx-sheet-desc">使用当前已注册的微信账号登录，无需验证码。</text>
-      <text class="wx-sheet-desc wx-sheet-desc2">若首次使用，请从首页选择角色后在注册页完成授权。须先启动本机后端并保持 apiBase 端口一致；本地未配微信密钥时会自动模拟 openid。</text>
-      <button class="btn-gold wx-sheet-btn" bindtap="runWechatLogin">确认授权并登录</button>
-      <text class="wx-sheet-cancel" bindtap="closeWxModal">取消</text>
-    </view>
-  </view>
 </view>
